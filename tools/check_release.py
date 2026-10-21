@@ -1,0 +1,114 @@
+"""Check source hygiene, local site links, and the prepared model manifest."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
+
+ROOT = Path(__file__).resolve().parents[1]
+SKIP_DIRS = {".git", "artifacts", "__pycache__", ".pytest_cache", ".venv", "build", "dist"}
+TEXT_SUFFIXES = {".py", ".json", ".md", ".toml", ".yml", ".yaml", ".html", ".css", ".js", ".txt"}
+
+
+def source_files(root: Path = ROOT):
+    for path in sorted(root.rglob("*")):
+        relative = path.relative_to(root)
+        if path.is_file() and not (set(relative.parts) & SKIP_DIRS):
+            if path.suffix != ".zip":
+                yield path
+
+
+class Links(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.urls = []
+        self.ids = set()
+
+    def handle_starttag(self, tag, attrs):
+        values = dict(attrs)
+        if values.get("id"):
+            self.ids.add(values["id"])
+        for key in ("src", "href", "poster"):
+            if values.get(key):
+                self.urls.append(values[key])
+
+
+def check_links() -> list[str]:
+    errors = []
+    site = ROOT / "site"
+    for page in site.rglob("*.html"):
+        parsed = Links()
+        parsed.feed(page.read_text(encoding="utf-8"))
+        for value in parsed.urls:
+            url = urlsplit(value)
+            if url.scheme or url.netloc:
+                continue
+            target = (page.parent / unquote(url.path)).resolve() if url.path else page
+            if url.path and not target.is_file():
+                errors.append(f"Broken local link in {page.relative_to(ROOT)}: {value}")
+            elif url.fragment and target.suffix == ".html":
+                destination = Links()
+                destination.feed(target.read_text(encoding="utf-8"))
+                if url.fragment not in destination.ids:
+                    errors.append(f"Missing anchor in {page.relative_to(ROOT)}: {value}")
+    return errors
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(4 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check-artifacts", action="store_true", help="Also hash the large local model files")
+    args = parser.parse_args()
+    errors = []
+    # Split literals keep the hygiene scanner itself free of the strings it checks.
+    private = ["/" + "home/", "/" + "mnt/", "/opt/" + "data/", "agent_" + "workpacks", "192" + ".168."]
+    windows_path = re.compile(r"[A-Za-z]:[\\/]" + "Users[\\/]", re.I)
+    file_count = 0
+    for path in source_files():
+        file_count += 1
+        if path.stat().st_size > 50 * 1024 * 1024:
+            errors.append(f"Source file exceeds 50 MiB: {path.relative_to(ROOT)}")
+        if path.suffix in TEXT_SUFFIXES:
+            content = path.read_text(encoding="utf-8-sig")
+            if any(token in content for token in private) or windows_path.search(content):
+                errors.append(f"Private development reference: {path.relative_to(ROOT)}")
+            if path.suffix == ".json":
+                try:
+                    json.loads(content)
+                except ValueError as error:
+                    errors.append(f"Invalid JSON {path.relative_to(ROOT)}: {error}")
+    errors.extend(check_links())
+    manifest_path = ROOT / "models" / "manifest.json"
+    artifact_count = 0
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("public_download_url") is not None:
+            errors.append("This local-only release must not claim a hosted model download.")
+        if args.check_artifacts:
+            for asset in manifest["assets"]:
+                file = ROOT / asset["path"]
+                artifact_count += 1
+                if not file.is_file():
+                    errors.append(f"Missing local model: {asset['path']}")
+                elif file.stat().st_size != asset["bytes"] or sha256(file) != asset["sha256"]:
+                    errors.append(f"Model size/hash mismatch: {asset['path']}")
+    else:
+        errors.append("Model manifest is missing.")
+    result = {"ok": not errors, "source_files": file_count, "hashed_artifacts": artifact_count, "errors": errors}
+    print(json.dumps(result, indent=2))
+    return 0 if not errors else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

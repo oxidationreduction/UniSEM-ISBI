@@ -1,0 +1,125 @@
+{
+  "schema": "unisem-site-assets-v1",
+  "software_license_is_not_data_permission": true,
+  "samples": "Frozen WaferEM crops, local research preview. Source dataset terms apply.",
+  "sources": [
+    {
+      "file": "assets/crops/typical_improvement_z080_raw.png",
+      "sha256": "143d1d37dfbc2713f554b39841dedc0cabebb8320ddd64adfd057ec5bd2dc426",
+      "source": "figures/qualitative_assets/typical_improvement_z080_raw.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/typical_improvement_z080_gt.png",
+      "sha256": "fdcff47c29302e88e12ad607f810851f285400f888f4348413a49b2ee3720b0d",
+      "source": "figures/qualitative_assets/typical_improvement_z080_gt.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/typical_improvement_z080_sam160.png",
+      "sha256": "6b72fd5e85f8d459b6e99c51ad02073c4c82f8cd9891f1db5afb07e9841cd594",
+      "source": "figures/qualitative_assets/typical_improvement_z080_sam160.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/typical_improvement_z080_sam625.png",
+      "sha256": "6897c51f77ef4296b5ae21da9905921028f0e83081102b8f1eaa2a144eab8067",
+      "source": "figures/qualitative_assets/typical_improvement_z080_sam625.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/typical_improvement_z080_source160.png",
+      "sha256": "f65f2502f10954f21fa2e98e6159dd701a0571c09f07c5e7efd635b01f939396",
+      "source": "figures/qualitative_assets/typical_improvement_z080_source160.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/typical_improvement_z080_source625.png",
+      "sha256": "ef201b9ad6a20131fe34734cb1631b5431c1ef0abf28a5e0c637ef81d68a972c",
+      "source": "figures/qualitative_assets/typical_improvement_z080_source625.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/minimum_improvement_z027_raw.png",
+      "sha256": "7c0fdea0003c9851b98f42945855ff5e166675418adcd64a8b6ded6edb516697",
+      "source": "figures/qualitative_assets/minimum_improvement_z027_raw.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/minimum_improvement_z027_gt.png",
+      "sha256": "550f7c56b9c4aae0bd4db3ea4698a27ff1ebbc4696e2fe314b20da68098a4cfe",
+      "source": "figures/qualitative_assets/minimum_improvement_z027_gt.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/minimum_improvement_z027_sam160.png",
+      "sha256": "23242652ecad4f8a3419dc4e27ce5814ad8af2479238a3b699633491a31a11c9",
+      "source": "figures/qualitative_assets/minimum_improvement_z027_sam160.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/minimum_improvement_z027_sam625.png",
+      "sha256": "023bd946654e2915a5665421afa901666d8f836f339c630ed77567ff105cc943",
+      "source": "figures/qualitative_assets/minimum_improvement_z027_sam625.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/minimum_improvement_z027_source160.png",
+      "sha256": "2d3bb2f1403a466c23bb784bb28a21c361e1e651572a04707eb9f2b6e87cc44f",
+      "source": "figures/qualitative_assets/minimum_improvement_z027_source160.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/crops/minimum_improvement_z027_source625.png",
+      "sha256": "1c0a72187e9375e6353bf5a68dda792c7c2b316d00e24c805766fa3bfbac4e5b",
+      "source": "figures/qualitative_assets/minimum_improvement_z027_source625.png",
+      "role": "frozen_display_crop",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/paper.pdf",
+      "sha256": "293665b854eacbf18b948b9effda0dfbd36f20d0bd815d88a69dd8b22894fe58",
+      "source": "UniSEM-ISBI.pdf",
+      "role": "author_manuscript_asset",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/supplement.pdf",
+      "sha256": "56df520bc3b0c819a2daffa273fea06298325f0473198852ed02af9ab1096da4",
+      "source": "output/UniSEM_ISBI_zh_supplement.pdf",
+      "role": "author_manuscript_asset",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/author-overview.pdf",
+      "sha256": "3954743bc6d20f4e7b9a8cedbb720c1dffbeb3a0d2411a83f87287be6e962e2c",
+      "source": "figures/1-overview.pdf",
+      "role": "author_manuscript_asset",
+      "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/historical-aaai.pdf",
+      "sha256": "5b8ef1b66b3046853b0cb2b3d164513214fc0820f19ad7e3255f0d774cc71d78",
+      "source": "figures/14-results-show.pdf",
+      "role": "author_manuscript_asset",
+      "release_status": "local_research_preview"
+    }
+  ],
+  "generated": [
+    "comparison.gif",
+    "comparison-poster.png",
+    "author-overview.png",
+    "historical-aaai.png"
+  ]
+}

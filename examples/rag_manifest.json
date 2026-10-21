@@ -1,0 +1,17 @@
+{
+  "dataset": "waferem",
+  "label_budget": 2,
+  "label_z_lists": {"wafer25_ds2": [0, 1]},
+  "records": [
+    {
+      "volume": "wafer25_ds2",
+      "split": "train",
+      "z_indices": [0, 1],
+      "prediction": "../outputs/training_volume_dense.h5",
+      "raw": "../datasets/training_volume_raw.h5",
+      "raw_key": "main",
+      "ground_truth": "../datasets/training_volume_labels.h5",
+      "ground_truth_key": "main"
+    }
+  ]
+}

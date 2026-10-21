@@ -1,0 +1,99 @@
+# Third-Party Notices
+
+UniSEM is distributed under Apache License 2.0. The following external works
+retain their own copyright and license terms. This notice is informational and
+does not replace the original license files or dataset agreements.
+
+## Segment Anything
+
+- Project: Segment Anything
+- Source: https://github.com/facebookresearch/segment-anything
+- ViT-L checkpoint: https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth
+- License: Apache License 2.0
+- Use in UniSEM: image-encoder architecture and initialization weights
+
+When redistributing a UniSEM checkpoint that contains SAM-derived weights,
+retain the Apache-2.0 license and attribution and identify the checkpoint as a
+modified derivative trained for prompt-free EM neuron segmentation.
+
+## micro-SAM
+
+- Project: Segment Anything for Microscopy
+- Source: https://github.com/computational-cell-analytics/micro-sam
+- License: MIT License
+- Use in UniSEM: SAM model loading, UNETR integration, and training datasets
+
+If micro-SAM source is copied into a release rather than installed as a
+dependency, include its complete MIT license and copyright notice.
+
+## torch-em
+
+- Project: torch-em
+- Source: https://github.com/constantinpape/torch-em
+- License: MIT License
+- Use in UniSEM: per-object distance targets and Dice-based distance loss
+
+## HQ-SAM and LoRA
+
+- HQ-SAM: https://github.com/SysCV/sam-hq (Apache-2.0)
+- LoRA: https://github.com/microsoft/LoRA (MIT)
+- Use in UniSEM: HQ-inspired early/late dense residual refinement and low-rank
+  Q/V encoder updates. The branch is a prompt-free dense adaptation of the
+  refinement idea, not a distribution of official HQ-SAM refinement weights.
+  Relevant research must be cited separately from code-license notices.
+
+## elf
+
+- Project: elf
+- Source: https://github.com/constantinpape/elf
+- License: MIT License
+- Use in UniSEM: segmentation and parallel-processing utilities
+
+## Scientific Python Dependencies
+
+UniSEM also depends on PyTorch, torchvision, NumPy, SciPy, scikit-image,
+scikit-learn, h5py, ImageIO, tifffile, joblib, zarr, pooch, xxhash, vigra,
+nifty, and affogato. These packages retain their respective upstream licenses. The pinned
+versions are listed in `constraints.txt`.
+
+## EMNeuron Dataset
+
+- Dataset: EMNeuron
+- Official source: https://huggingface.co/datasets/yanchaoz/EMNeuron
+- Dataset-card license declaration: MIT
+- Redistribution in this repository: none
+
+Users download EMNeuron directly from the official source and are responsible
+for following the dataset card and citing the corresponding publication.
+
+## WaferEM/MEC Dataset
+
+- Dataset: WaferEM/MEC
+- Official source: https://huggingface.co/datasets/cyd0806/wafer_EM
+- Public listing: CC BY-NC 4.0, with gated access conditions
+- Full dataset redistribution in this repository: none
+
+Neither full WaferEM volumes nor prepared full-volume arrays are included.
+The local project page contains two existing display crops and a historical
+paper figure for author review; they retain separate dataset/figure terms.
+The source-code license does not apply to those images. Candidate target
+weights are held locally until derivative-weight redistribution conditions
+are resolved. No public download or permission to redistribute is claimed.
+
+## Website
+
+- Academic Project Page Template:
+  https://github.com/eliahuhorwitz/Academic-project-page-template
+- Nerfies: https://nerfies.github.io/
+- Website template license: CC BY-SA 4.0
+- Use: adapted academic-page organization and comparison interaction patterns;
+  see the site footer and site/LICENSE.md. Template analytics and external
+  runtime dependencies are not included. The website license does not cover
+  third-party microscopy imagery, paper figures, datasets, or trained weights.
+
+## Trained Random-Forest Artifacts
+
+Random-forest edge classifiers are serialized with joblib and depend on
+scikit-learn. Pickle-compatible files may execute code during loading. Load
+only trusted artifacts listed in the local release manifest, verify their
+published cryptographic checksums, and do not load untrusted files.

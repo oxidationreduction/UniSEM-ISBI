@@ -1,0 +1,201 @@
+{
+  "schema_version": "unisem.assets.v1",
+  "status": "local_candidate_only",
+  "weights_license": "pending_data_and_upstream_redistribution_review",
+  "public_download_url": null,
+  "representative_seed": 12345,
+  "source_code_license": "Apache-2.0",
+  "neural_schema": "unisem.inference.v2",
+  "adapter_schema": "unisem.adapter.v1",
+  "assets": [
+    {
+      "kind": "fullft",
+      "source_sha256": "4d807d79014e6e0bec25668c7dcd0119da3423eb5328159c3575d241d93547d5",
+      "schema_version": "unisem.inference.v2",
+      "encoder_tensors": 345,
+      "decoder_tensors": 74,
+      "tensor_parity": true,
+      "weights_only_load": true,
+      "private_metadata_hits": 0,
+      "sha256": "77b88cf2133a16b5d780a443d450dd4d8647b17372be7bd1765170869b844675",
+      "bytes": 1279756244,
+      "path": "artifacts/unisem_fullft_waferem_seed12345.pt",
+      "local_download_verified": true,
+      "release_status": "local_candidate_only"
+    },
+    {
+      "kind": "rf",
+      "source_sha256": "99c2657cf40b6b7653ba003ac7db9cfdbea5259c080ee725c069292ee8cbb0b9",
+      "byte_parity": true,
+      "sha256": "99c2657cf40b6b7653ba003ac7db9cfdbea5259c080ee725c069292ee8cbb0b9",
+      "bytes": 47646724,
+      "path": "artifacts/unisem_fullft_waferem_seed12345_rf.joblib",
+      "local_download_verified": true,
+      "release_status": "local_candidate_only"
+    },
+    {
+      "kind": "lightft",
+      "source_sha256": "6f7fffbf56b1148ac3588ccde0d13ab709775543e2838c5a958acc1dd29276e8",
+      "base_sha256": "62821463f1d11c5adcc172337b78cf7fab10665add023de3aaf35373a7f2c1fe",
+      "lora_tensors": 96,
+      "updated_parameters": 13197254,
+      "schema_version": "unisem.adapter.v1",
+      "encoder_tensors": 441,
+      "decoder_tensors": 74,
+      "tensor_parity": true,
+      "weights_only_load": true,
+      "private_metadata_hits": 0,
+      "sha256": "3b63fec7f01645c78a99d422a50a32a8c230f516acc1f57584dc2c4eca56c27a",
+      "bytes": 52857292,
+      "state_elements_including_buffers": 13199178,
+      "path": "artifacts/unisem_lightft_waferem_seed12345.adapter.pt",
+      "local_download_verified": true,
+      "release_status": "local_candidate_only"
+    },
+    {
+      "kind": "rf",
+      "source_sha256": "a7b152e8945f77bfd58a4bf3fe478acc126c019dda2f6af255df76001e84f762",
+      "byte_parity": true,
+      "sha256": "a7b152e8945f77bfd58a4bf3fe478acc126c019dda2f6af255df76001e84f762",
+      "bytes": 43427364,
+      "path": "artifacts/unisem_lightft_waferem_seed12345_rf.joblib",
+      "local_download_verified": true,
+      "release_status": "local_candidate_only"
+    },
+    {
+      "kind": "rf",
+      "source_sha256": "13c35acb2d085e292c4b6a44c6bd7840fb9a6839fa7cab1d5d5f63ab8ea3e4df",
+      "byte_parity": true,
+      "sha256": "13c35acb2d085e292c4b6a44c6bd7840fb9a6839fa7cab1d5d5f63ab8ea3e4df",
+      "bytes": 76295596,
+      "path": "artifacts/unisem_stage1_emneuron_full55_rf.joblib",
+      "local_download_verified": true,
+      "release_status": "local_candidate_only"
+    },
+    {
+      "kind": "stage1",
+      "source_sha256": "ad132cba9098e632dc22e20dfa017313f99b76b5f37f9a7c2ce0f2ef06ca013c",
+      "schema_version": "unisem.inference.v2",
+      "encoder_tensors": 345,
+      "decoder_tensors": 74,
+      "tensor_parity": true,
+      "weights_only_load": true,
+      "private_metadata_hits": 0,
+      "sha256": "62821463f1d11c5adcc172337b78cf7fab10665add023de3aaf35373a7f2c1fe",
+      "bytes": 1279754552,
+      "path": "artifacts/unisem_stage1_emneuron_vitl.pt",
+      "local_download_verified": true,
+      "release_status": "local_candidate_only"
+    }
+  ],
+  "pairs": [
+    {
+      "model": "artifacts/unisem_stage1_emneuron_vitl.pt",
+      "rf": "artifacts/unisem_stage1_emneuron_full55_rf.joblib",
+      "dataset": "EMNeuron",
+      "rf_identity": "July 24 full55 source-domain RF"
+    },
+    {
+      "model": "artifacts/unisem_lightft_waferem_seed12345.adapter.pt",
+      "base": "artifacts/unisem_stage1_emneuron_vitl.pt",
+      "rf": "artifacts/unisem_lightft_waferem_seed12345_rf.joblib",
+      "dataset": "WaferEM-8nm"
+    },
+    {
+      "model": "artifacts/unisem_fullft_waferem_seed12345.pt",
+      "rf": "artifacts/unisem_fullft_waferem_seed12345_rf.joblib",
+      "dataset": "WaferEM-8nm"
+    }
+  ],
+  "architecture": {
+    "name": "UniSEM-HQ-UNETR",
+    "image_encoder": "SAM ViT-L",
+    "dense_head": "UNETR-style decoder plus HQ-inspired logit residual",
+    "channels": [
+      "foreground",
+      "center_distances",
+      "boundary_distances"
+    ],
+    "prompt_free": true,
+    "hq_sam_pretrained_refinement_weights": false
+  },
+  "evaluation": {
+    "dimension": "2D",
+    "component_pseudo_connectivity": 8,
+    "component_min_area": 1,
+    "emneuron_aggregation": "Within-volume slice mean, then equal mean across eight volumes",
+    "waferem_test_slices": 125,
+    "target_seed_statistics": "Paper means and sample standard deviations use three seeds; the bundled model is seed 12345 only."
+  },
+  "training": {
+    "stage1": {
+      "dataset": "EMNeuron",
+      "planned_epochs": 35,
+      "selected_epoch": 32
+    },
+    "stage2": {
+      "dataset": "WaferEM-8nm",
+      "labeled_slices": 625,
+      "optimizer": "AdamW",
+      "initial_learning_rate": 1e-05,
+      "weight_decay": 0.0001,
+      "updates": 9375,
+      "monitoring": "Budget-covered training-monitor crops; overlap with training is possible."
+    },
+    "lightft": {
+      "rank": 16,
+      "alpha": 16,
+      "dropout": 0,
+      "target_blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "target_matrices": [
+        "q",
+        "v"
+      ],
+      "updated_parameters": 13197254,
+      "fullft_updated_parameters": 319902662
+    }
+  },
+  "representative_seed_scope": "Second-stage models only; source checkpoint is the fixed first-stage export.",
+  "validation": {
+    "export_device": "cpu",
+    "source_encoder_decoder_tensor_parity": "exact",
+    "adapter_reconstruction_tensor_parity": "exact",
+    "weights_only_reload": "passed",
+    "strict_model_loading": "passed for all three neural models on CPU",
+    "original_encoder_frozen_parity": "exact for all LightFT encoder base tensors",
+    "lora_tensors": 96,
+    "lightft_updated_parameters": 13197254,
+    "new_training": "not_performed",
+    "new_image_inference": "One fixed 256px CPU forward parity smoke only; no dataset inference or new paper results",
+    "local_asset_sha256_verification": "All six downloaded assets passed byte count and SHA256 verification on Windows.",
+    "rf_trusted_deserialization": "passed for all three hash-verified RF assets",
+    "rf_payload_private_absolute_paths": "none in the three mapping/list metadata payloads",
+    "strict_tensor_validator": "Matching state accepted and dtype mismatch rejected on CPU.",
+    "temporary_transfer_server": "Stopped after all six asset hashes passed; no cloud deployment."
+  }
+}

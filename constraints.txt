@@ -1,0 +1,21 @@
+torch==2.6.0
+torchvision==0.21.0
+numpy==1.26.4
+scipy==1.15.2
+scikit-image==0.25.2
+scikit-learn==1.7.2
+h5py==3.15.1
+imageio==2.37.0
+tifffile==2025.5.10
+joblib==1.5.3
+kornia==0.8.2
+zarr==2.18.3
+pooch==1.9.0
+xxhash==3.6.0
+torch-em @ git+https://github.com/constantinpape/torch-em.git@0.8.1
+tensorboard==2.20.0
+micro-sam @ git+https://github.com/computational-cell-analytics/micro-sam.git@v1.7.5
+segment-anything==1.0
+elf @ git+https://github.com/constantinpape/elf.git@0.7.3
+pandas==2.3.3
+tqdm==4.67.3

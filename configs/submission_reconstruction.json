@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "manifest_id": "unisem-isbi-reconstruction-v2",
+  "protocol_config": "configs/paper_protocol.json",
+  "interfaces": {
+    "model": "unisem.model",
+    "lora": "unisem.lora",
+    "training": "unisem.training",
+    "inference": "unisem.inference",
+    "graph": "unisem.rag",
+    "evaluation": "unisem.metrics"
+  },
+  "parameter_counts": {
+    "image_encoder": 308278272,
+    "unetr_decoder": 9591235,
+    "hq_residual": 2033155,
+    "lightft_trainable": 13197254,
+    "fullft_trainable": 319902662,
+    "lora_qv_r16_trainable": 1572864,
+    "head_only_trainable": 11624390,
+    "lightft_total": 321475526
+  },
+  "checkpoint_schema": "unisem.inference.v2",
+  "adapter_schema": "unisem.adapter.v1",
+  "stage1_rf_identity": "July-24 EMNeuron full55; distinct from the June-09 historical RF"
+}

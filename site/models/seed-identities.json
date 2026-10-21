@@ -1,0 +1,61 @@
+{
+  "schema_version": "unisem.model-identities.v1",
+  "representative_seed": 12345,
+  "selection_rule": "Fixed to match the existing display cache; not selected by test performance.",
+  "paper_repeats": [
+    12345,
+    23456,
+    34567
+  ],
+  "target": "WaferEM-8nm",
+  "identities": [
+    {
+      "model": "LightFT",
+      "seed": 12345,
+      "original_checkpoint_sha256": "6f7fffbf56b1148ac3588ccde0d13ab709775543e2838c5a958acc1dd29276e8",
+      "rf_sha256": "a7b152e8945f77bfd58a4bf3fe478acc126c019dda2f6af255df76001e84f762",
+      "exported_locally": true,
+      "target_labeled_slices": 625
+    },
+    {
+      "model": "LightFT",
+      "seed": 23456,
+      "original_checkpoint_sha256": "be15d275cd8d8619f9c84f6b38d085613ed6505c8b4aa2343c3ed0717da1bfe5",
+      "rf_sha256": "98be309809f1b401ab2de8df5cc9ed7146ef7fb04c19a844b2022f99c135bcfe",
+      "exported_locally": false,
+      "target_labeled_slices": 625
+    },
+    {
+      "model": "LightFT",
+      "seed": 34567,
+      "original_checkpoint_sha256": "ff7c912fe403aaa943693d616163f81d922da8189d13e65ca11d17fad5459c18",
+      "rf_sha256": "43a69ff800c2d4bf9a303fc57c2e414b5f34cb01dc0d9ff9c87a8de5a2a66caa",
+      "exported_locally": false,
+      "target_labeled_slices": 625
+    },
+    {
+      "model": "FullFT",
+      "seed": 12345,
+      "original_checkpoint_sha256": "4d807d79014e6e0bec25668c7dcd0119da3423eb5328159c3575d241d93547d5",
+      "rf_sha256": "99c2657cf40b6b7653ba003ac7db9cfdbea5259c080ee725c069292ee8cbb0b9",
+      "exported_locally": true,
+      "target_labeled_slices": 625
+    },
+    {
+      "model": "FullFT",
+      "seed": 23456,
+      "original_checkpoint_sha256": "c2458cb4e0aa24faa1778ccd04a104654ab57f368b98b73a56d51391d9b68191",
+      "rf_sha256": "594dd290cc2b0c5940c3d56bdc5636574c6d7e62682df0f4272afdf1c6dc52b6",
+      "exported_locally": false,
+      "target_labeled_slices": 625
+    },
+    {
+      "model": "FullFT",
+      "seed": 34567,
+      "original_checkpoint_sha256": "45a8687aef780d901b217008f712fd653a759dd55a55d75d7baede678cc6fc92",
+      "rf_sha256": "a1c41b19c0ada3be5a8cddefca952838f9f922edfc4faab2a13a918c3855d378",
+      "exported_locally": false,
+      "target_labeled_slices": 625
+    }
+  ]
+}

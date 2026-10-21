@@ -1,0 +1,274 @@
+{
+  "schema": "unisem-public-evidence-v1",
+  "metric_direction": "lower_is_better",
+  "baseline": {
+    "emneuron": [
+      {
+        "name": "UniSEM",
+        "voi": 1.6372,
+        "voi_merge": 0.6916,
+        "arand": 0.3407
+      },
+      {
+        "name": "µSAM",
+        "voi": 1.7502,
+        "voi_merge": 0.7923,
+        "arand": 0.3653
+      },
+      {
+        "name": "HQ-SAM",
+        "voi": 4.8702,
+        "voi_merge": 4.6094,
+        "arand": 0.8168
+      },
+      {
+        "name": "SegNeuron",
+        "voi": 1.7025,
+        "voi_merge": 0.7269,
+        "arand": 0.374
+      },
+      {
+        "name": "TokenUnify-500M",
+        "voi": 2.8299,
+        "voi_merge": 1.1926,
+        "arand": 0.5931
+      },
+      {
+        "name": "nnUNet",
+        "voi": 2.0031,
+        "voi_merge": 1.2288,
+        "arand": 0.4275
+      }
+    ],
+    "waferem": [
+      {
+        "name": "UniSEM FullFT",
+        "voi": 1.0957,
+        "voi_merge": 0.5322,
+        "arand": 0.1314
+      },
+      {
+        "name": "UniSEM LightFT",
+        "voi": 1.1196,
+        "voi_merge": 0.4705,
+        "arand": 0.1337
+      },
+      {
+        "name": "µSAM",
+        "voi": 1.1939,
+        "voi_merge": 0.609,
+        "arand": 0.1448
+      },
+      {
+        "name": "HQ-SAM",
+        "voi": 5.6248,
+        "voi_merge": 5.6248,
+        "arand": 0.854
+      },
+      {
+        "name": "SegNeuron",
+        "voi": 2.0339,
+        "voi_merge": 0.9911,
+        "arand": 0.3147
+      },
+      {
+        "name": "TokenUnify-500M",
+        "voi": 2.0221,
+        "voi_merge": 0.7714,
+        "arand": 0.2754
+      },
+      {
+        "name": "nnUNet",
+        "voi": 4.6995,
+        "voi_merge": 4.3507,
+        "arand": 0.744
+      }
+    ]
+  },
+  "structure": [
+    {
+      "name": "Dense decoder",
+      "voi": 1.7439,
+      "voi_sd": 0.0347,
+      "arand": 0.3671,
+      "arand_sd": 0.0093,
+      "n": 3,
+      "residual": false,
+      "fusion": false,
+      "early": false
+    },
+    {
+      "name": "Final-feature residual",
+      "voi": 1.7712,
+      "voi_sd": 0.0196,
+      "arand": 0.3725,
+      "arand_sd": 0.0057,
+      "n": 3,
+      "residual": true,
+      "fusion": false,
+      "early": false
+    },
+    {
+      "name": "Repeated-final fusion",
+      "voi": 1.7666,
+      "voi_sd": 0.0049,
+      "arand": 0.3692,
+      "arand_sd": 0.0011,
+      "n": 3,
+      "residual": true,
+      "fusion": true,
+      "early": false
+    },
+    {
+      "name": "Cross-layer fusion",
+      "voi": 1.7207,
+      "voi_sd": 0.0151,
+      "arand": 0.3572,
+      "arand_sd": 0.0061,
+      "n": 3,
+      "residual": true,
+      "fusion": true,
+      "early": true
+    }
+  ],
+  "stages": [
+    {
+      "name": "Source training only",
+      "voi": 2.0227,
+      "arand": 0.3396,
+      "n": 1,
+      "stage1": true,
+      "stage2": false
+    },
+    {
+      "name": "Target training only",
+      "voi": 1.2877,
+      "voi_sd": 0.0237,
+      "arand": 0.1873,
+      "arand_sd": 0.0058,
+      "n": 3,
+      "stage1": false,
+      "stage2": true
+    },
+    {
+      "name": "Two-stage training",
+      "voi": 1.1196,
+      "voi_sd": 0.0541,
+      "arand": 0.1337,
+      "arand_sd": 0.0076,
+      "n": 3,
+      "stage1": true,
+      "stage2": true
+    }
+  ],
+  "annotation": [
+    {
+      "name": "Target-only",
+      "voi": 1.3942,
+      "voi_sd": 0.0805,
+      "arand": 0.2133,
+      "arand_sd": 0.0279,
+      "n": 3,
+      "source": false,
+      "slices": 160
+    },
+    {
+      "name": "Target-only",
+      "voi": 1.2877,
+      "voi_sd": 0.0237,
+      "arand": 0.1873,
+      "arand_sd": 0.0058,
+      "n": 3,
+      "source": false,
+      "slices": 625
+    },
+    {
+      "name": "Two-stage",
+      "voi": 1.1725,
+      "voi_sd": 0.025,
+      "arand": 0.1411,
+      "arand_sd": 0.0031,
+      "n": 3,
+      "source": true,
+      "slices": 160
+    },
+    {
+      "name": "Two-stage",
+      "voi": 1.1416,
+      "voi_sd": 0.0186,
+      "arand": 0.1358,
+      "arand_sd": 0.0021,
+      "n": 3,
+      "source": true,
+      "slices": 315
+    },
+    {
+      "name": "Two-stage",
+      "voi": 1.1196,
+      "voi_sd": 0.0541,
+      "arand": 0.1337,
+      "arand_sd": 0.0076,
+      "n": 3,
+      "source": true,
+      "slices": 625
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Decoder",
+      "voi": 1.2353,
+      "voi_sd": 0.0278,
+      "arand": 0.1554,
+      "arand_sd": 0.0047,
+      "n": 3,
+      "parameters_m": 9.59,
+      "lightft": false
+    },
+    {
+      "name": "Decoder + HQ",
+      "voi": 1.2873,
+      "voi_sd": 0.0231,
+      "arand": 0.1638,
+      "arand_sd": 0.0069,
+      "n": 2,
+      "parameters_m": 11.62,
+      "lightft": false
+    },
+    {
+      "name": "Last 6 blocks + heads",
+      "voi": 1.1491,
+      "voi_sd": 0.0323,
+      "arand": 0.1384,
+      "arand_sd": 0.0045,
+      "n": 3,
+      "parameters_m": 12.02,
+      "lightft": false
+    },
+    {
+      "name": "All 24 blocks + heads",
+      "voi": 1.1196,
+      "voi_sd": 0.0541,
+      "arand": 0.1337,
+      "arand_sd": 0.0076,
+      "n": 3,
+      "parameters_m": 13.2,
+      "lightft": true
+    },
+    {
+      "name": "FullFT",
+      "voi": 1.0957,
+      "voi_sd": 0.0056,
+      "arand": 0.1314,
+      "arand_sd": 0.0018,
+      "n": 3,
+      "parameters_m": 319.9,
+      "lightft": false
+    }
+  ],
+  "sources": {
+    "tables/performance.tex": "d491ce49001b830f3fb52441be42d9b5800ef370658f109434b641fc067c0ed9",
+    "tables/structure_ablation.tex": "c7b926c0dc56276244f2e7e8f1061c2d8b43e0ff1f42eb41a9d20c7a3800e46e",
+    "tables/stage_ablation.tex": "e184b32cb70f908dfa27c9879962cf579c82cfb88dac9d370e9783e9324b30d5",
+    "tables/efficiency.tex": "c20ab023dd27c30feb6679bc62c09a7d500096261a765d31eacbd91483552422"
+  }
+}

@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unisem"
+version = "0.2.0"
+description = "UniSEM: reusable electron-microscopy segmentation and efficient target specialization"
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+license = {file = "LICENSE"}
+dependencies = [
+    "elf @ git+https://github.com/constantinpape/elf.git@0.7.3",
+    "h5py>=3.15,<4",
+    "imageio>=2.37,<3",
+    "joblib>=1.5,<2",
+    "kornia>=0.8,<0.9",
+    "micro-sam @ git+https://github.com/computational-cell-analytics/micro-sam.git@v1.7.5",
+    "numpy>=1.26,<2",
+    "pooch>=1.9,<2",
+    "scikit-image>=0.25,<0.26",
+    "scikit-learn>=1.7,<1.8",
+    "scipy>=1.15,<1.16",
+    "segment-anything==1.0",
+    "tifffile>=2025.5",
+    "tqdm>=4.67,<5",
+    "torch>=2.6,<2.7",
+    "torch-em @ git+https://github.com/constantinpape/torch-em.git@0.8.1",
+    "tensorboard>=2.20,<3",
+    "torchvision>=0.21,<0.22",
+    "xxhash>=3.6,<4",
+    "zarr>=2.18,<3",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+unisem = "unisem.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"share/unisem" = ["configs/paper_protocol.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "cuda: requires a CUDA device",
+    "realdata: requires local licensed data and paper checkpoints",
+]

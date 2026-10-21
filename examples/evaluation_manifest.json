@@ -1,0 +1,44 @@
+{
+  "volumes": [
+    {
+      "volume": "FAFB-1",
+      "prediction": "../outputs/FAFB-1.h5",
+      "ground_truth": "../datasets/FAFB-1/label.tif"
+    },
+    {
+      "volume": "FAFB-2",
+      "prediction": "../outputs/FAFB-2.h5",
+      "ground_truth": "../datasets/FAFB-2/label.tif"
+    },
+    {
+      "volume": "FIB25-1",
+      "prediction": "../outputs/FIB25-1.h5",
+      "ground_truth": "../datasets/FIB25-1/label.tif"
+    },
+    {
+      "volume": "FIB25-2",
+      "prediction": "../outputs/FIB25-2.h5",
+      "ground_truth": "../datasets/FIB25-2/label.tif"
+    },
+    {
+      "volume": "Kstr",
+      "prediction": "../outputs/Kstr.h5",
+      "ground_truth": "../datasets/Kstr/label.tif"
+    },
+    {
+      "volume": "Harris",
+      "prediction": "../outputs/Harris.h5",
+      "ground_truth": "../datasets/Harris/label.tif"
+    },
+    {
+      "volume": "Ionsem",
+      "prediction": "../outputs/Ionsem.h5",
+      "ground_truth": "../datasets/Ionsem/label.tif"
+    },
+    {
+      "volume": "Microns[B]",
+      "prediction": "../outputs/Microns[B].h5",
+      "ground_truth": "../datasets/Microns[B]/label.tif"
+    }
+  ]
+}

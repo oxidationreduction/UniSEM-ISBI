@@ -1,0 +1,158 @@
+{
+  "schema": "unisem-precomputed-viewer-v1",
+  "dataset": "WaferEM, 8 nm XY",
+  "volume": "wafer4_ds2",
+  "seed": 12345,
+  "full_slice_shape": [
+    625,
+    625
+  ],
+  "methods": {
+    "raw": "Raw EM",
+    "gt": "Ground truth",
+    "sam160": "Target-only \u00b7 160 slices",
+    "sam625": "Target-only \u00b7 625 slices",
+    "source160": "Two-stage \u00b7 160 slices",
+    "source625": "Two-stage \u00b7 625 slices"
+  },
+  "selection": {
+    "slices": "Typical: closest observed positive whole-slice CREMI gap to its median. Residual: smallest gap among all 125 slices.",
+    "crops": "256 px windows, stride 128 with terminal coordinates; maximum boundary disagreement, ties by y then x.",
+    "colors": "Prediction instance colors follow maximum full-slice GT overlap. Actual prediction boundaries are retained; merged instances remain a single region."
+  },
+  "source_manifest_sha256": "346892637bf3aba5f030094e2efcffdc8f05ebc9df1d85f88a6f27cd48354874",
+  "cases": [
+    {
+      "id": "typical_improvement",
+      "title": "Typical improvement",
+      "z": 80,
+      "crop_yxyx": [
+        128,
+        128,
+        384,
+        384
+      ],
+      "crop_shape": [
+        256,
+        256
+      ],
+      "xy_nm": 8,
+      "images": {
+        "raw": "crops/typical_improvement_z080_raw.png",
+        "gt": "crops/typical_improvement_z080_gt.png",
+        "sam160": "crops/typical_improvement_z080_sam160.png",
+        "sam625": "crops/typical_improvement_z080_sam625.png",
+        "source160": "crops/typical_improvement_z080_source160.png",
+        "source625": "crops/typical_improvement_z080_source625.png"
+      },
+      "whole_slice_metrics": {
+        "sam160": {
+          "VOI_s": 0.70295047371072,
+          "VOI_m": 0.534155268242646,
+          "VOI_sum": 1.237105741953366,
+          "ARAND": 0.16306456887291576,
+          "CREMI": 0.4491415305467022
+        },
+        "sam625": {
+          "VOI_s": 0.6839921140806826,
+          "VOI_m": 0.5252681014258993,
+          "VOI_sum": 1.209260215506582,
+          "ARAND": 0.16550122414440938,
+          "CREMI": 0.4473634383535065
+        },
+        "source160": {
+          "VOI_s": 0.5881195717291083,
+          "VOI_m": 0.4319772389079528,
+          "VOI_sum": 1.0200968106370611,
+          "ARAND": 0.10126582192253442,
+          "CREMI": 0.32140463899844063
+        },
+        "source625": {
+          "VOI_s": 0.5936052202109972,
+          "VOI_m": 0.4388549431590949,
+          "VOI_sum": 1.032460163370092,
+          "ARAND": 0.09786596280132398,
+          "CREMI": 0.31787215660108753
+        }
+      },
+      "interpretation": "At one contact, target-only training with 625 slices joins two GT instances; the two-stage model with 160 slices separates them. Residual errors remain elsewhere."
+    },
+    {
+      "id": "minimum_improvement",
+      "title": "Residual merge / regression",
+      "z": 27,
+      "crop_yxyx": [
+        369,
+        369,
+        625,
+        625
+      ],
+      "crop_shape": [
+        256,
+        256
+      ],
+      "xy_nm": 8,
+      "images": {
+        "raw": "crops/minimum_improvement_z027_raw.png",
+        "gt": "crops/minimum_improvement_z027_gt.png",
+        "sam160": "crops/minimum_improvement_z027_sam160.png",
+        "sam625": "crops/minimum_improvement_z027_sam625.png",
+        "source160": "crops/minimum_improvement_z027_source160.png",
+        "source625": "crops/minimum_improvement_z027_source625.png"
+      },
+      "whole_slice_metrics": {
+        "sam160": {
+          "VOI_s": 0.6308118386063937,
+          "VOI_m": 0.6307987787612168,
+          "VOI_sum": 1.2616106173676105,
+          "ARAND": 0.18939487061371207,
+          "CREMI": 0.4888175320518118
+        },
+        "sam625": {
+          "VOI_s": 0.5819773918232372,
+          "VOI_m": 0.5216828618327911,
+          "VOI_sum": 1.1036602536560283,
+          "ARAND": 0.15056573028033493,
+          "CREMI": 0.40764373179665053
+        },
+        "source160": {
+          "VOI_s": 0.7260767767178056,
+          "VOI_m": 0.45857042005914916,
+          "VOI_sum": 1.1846471967769547,
+          "ARAND": 0.17517947033169312,
+          "CREMI": 0.45555007239743905
+        },
+        "source625": {
+          "VOI_s": 0.7667621442521844,
+          "VOI_m": 0.4370750979820768,
+          "VOI_sum": 1.2038372422342611,
+          "ARAND": 0.18000676616689815,
+          "CREMI": 0.4655092361767553
+        }
+      },
+      "interpretation": "Source initialization does not improve every location. Here the two-stage model with 160 slices still merges adjacent GT instances that target-only training separates."
+    }
+  ],
+  "prediction_checkpoints": {
+    "sam160": {
+      "checkpoint_sha256": "6d17d49dd81fe8c2ec7ef2327909e20af54f32de33c69408cef54c245d25fe70",
+      "segmentation_sha256": "6c0c2c7035ea2aae8fcbc93eab649db08db6b38b0d1308edd538c248ab00a530",
+      "target_label_slices": 160
+    },
+    "sam625": {
+      "checkpoint_sha256": "12006ad16d7a603522eef7fe5213159b1feff91b47628abc6e9c4968c2b05300",
+      "segmentation_sha256": "15d6a3a565089597e9bd5c756c113f142dc89b7c8400552045ce71aeb5314b7f",
+      "target_label_slices": 625
+    },
+    "source160": {
+      "checkpoint_sha256": "d2e9e7685cea2ce7f38377f9839d047efad1853337e4c3928a8ba62b21c0acbf",
+      "segmentation_sha256": "a708959cc8e8f7d118633ffa03df19eb338259f27987ab0c4b571f33a656c5ef",
+      "target_label_slices": 160
+    },
+    "source625": {
+      "checkpoint_sha256": "6f7fffbf56b1148ac3588ccde0d13ab709775543e2838c5a958acc1dd29276e8",
+      "segmentation_sha256": "6bcfdc61d8cde6a91dcd12605b5832e2aeb6fc2a6e13b2ba3f4f1f404b8d6d60",
+      "target_label_slices": 625
+    }
+  }
+}
