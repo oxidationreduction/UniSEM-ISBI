@@ -2,6 +2,37 @@
 
 This page records implementation checks, not new scientific experiments.
 
+## Product page and Colab preparation — 2026-10-22
+
+- The redesigned page was inspected in a real browser at desktop, 768-pixel,
+  and 390-pixel widths. A 640-pixel reflow check covers the layout width of a
+  1280-pixel viewport at 200% zoom. No full-page horizontal overflow was found.
+  Body text is 20px on desktop and 18px on mobile; controls/tables are at least
+  16px and supporting text at least 14px.
+- Actual case selection, pointer divider dragging, keyboard split adjustment,
+  opacity, zoom/reset, GIF playback/pause, and keyboard evidence tabs passed.
+  The page retains the shared Pointer Events implementation for touch; no
+  physical touchscreen test is claimed.
+- Twenty-three focused tests passed: upload/export and invalid inputs,
+  published/local model manifest separation, stored RF feature order, and
+  existing RF training and merge behavior.
+- One real first-stage inference completed on the fixed 256px display crop
+  in the reference Linux Python 3.10 environment. It produced finite dense
+  arrays, uint32 final labels, a boundary preview, and the downloadable ZIP.
+  This was a software integration check on one image, not a new evaluation.
+- The source RF stores the same 55 named features in a different order from
+  the public feature extractor. Loading now maps columns by their names;
+  the current canonical-order RF interface is preserved. On 12 real edges,
+  wrapper probabilities matched the original RF after manual column ordering
+  exactly (maximum absolute difference zero).
+- The official micromamba binary downloaded and ran on Linux. The separate
+  cold-install attempt stopped because the test host could not resolve the
+  upstream package hosts. The successful inference inherited the reference
+  ML dependencies; it does not establish a clean Colab installation.
+- Hugging Face upload and the actual Colab cold-start test remain pending
+  browser access. The notebook's model revision must be filled from the
+  verified upload before this prepared update is published.
+
 ## Model package
 
 - Built and installed `unisem==0.2.0` as a wheel in a separate Python 3.10

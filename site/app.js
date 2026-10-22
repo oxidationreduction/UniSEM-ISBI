@@ -191,6 +191,34 @@ const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 motionPreference.addEventListener("change", () => { if (motionPreference.matches) setFilm(false); });
 document.addEventListener("visibilitychange", () => { if (document.hidden) setFilm(false); });
 
+
+function initEvidenceTabs() {
+  const tabs = [...document.querySelectorAll("[data-evidence]")];
+  function selectTab(index, moveFocus = false) {
+    tabs.forEach((tab, position) => {
+      const active = position === index;
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      document.getElementById(tab.getAttribute("aria-controls")).hidden = !active;
+    });
+    if (moveFocus) tabs[index].focus();
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectTab(index));
+    tab.addEventListener("keydown", (event) => {
+      let next;
+      if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+      else if (event.key === "ArrowLeft") next = (index + tabs.length - 1) % tabs.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      selectTab(next, true);
+    });
+  });
+}
+initEvidenceTabs();
+
 async function start() {
   try {
     const [resultsResponse, casesResponse] = await Promise.all([fetch("data/results.json"), fetch(assets + "cases.json")]);

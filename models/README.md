@@ -1,10 +1,12 @@
-# UniSEM candidate models
+# UniSEM models
 
-These are **local candidate release assets**, not a public weight release.
-The source code is Apache-2.0; that license does not automatically grant rights
-to the training data, figures, or derived model weights. Dataset and upstream
-checkpoint redistribution terms must be resolved before publishing the assets.
-No hosted download or published DOI is claimed.
+The **first-stage EMNeuron model and matching full55 RF** are released through
+[dreamBuilder/UniSEM](https://huggingface.co/dreamBuilder/UniSEM) under Apache-2.0.
+The [Colab notebook](https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb)
+downloads both files at a fixed revision and verifies their SHA256 values.
+WaferEM LightFT and FullFT assets remain **local candidates**. Their dataset
+and derivative-weight conditions are recorded separately; they are not included
+in the public model download.
 
 ## Choose a model
 
@@ -14,9 +16,10 @@ No hosted download or published DOI is claimed.
 | WaferEM LightFT adapter, seed 12345 | Target specialization with the original encoder frozen | The exact sanitized first-stage model and LightFT RF |
 | WaferEM FullFT model, seed 12345 | Target specialization updating the full neural model | FullFT RF |
 
-Files reside in the repository's ignored `artifacts/` directory. See
-[manifest.json](manifest.json) for exact filenames, byte sizes, SHA256 values,
-and paired assets. The adapter is not a standalone model. Its `base_sha256`
+Downloaded files and local candidates reside in the repository's ignored
+`artifacts/` directory. See [manifest.json](manifest.json) for exact filenames,
+byte sizes, SHA256 values, published download identities, and paired assets.
+The adapter is not a standalone model. Its `base_sha256`
 binds the sanitized first-stage **file**, while `source_sha256` identifies the
 original training export. These hashes have different purposes.
 
@@ -107,5 +110,7 @@ merges remain possible, including in the displayed residual-error case.
 Source-domain performance and target specialization are separate experimental
 settings. Real deployments should validate their own acquisition domain,
 resolution, foreground/background conventions, and downstream instance protocol.
-Training data are not redistributed. Final author information, model-weight
-license clearance, and hosted downloads remain pending.
+Training data are not redistributed. The first-stage source review covers
+EMNeuron's official MIT declaration and SAM's Apache-2.0 model license; the
+public model card retains the relevant attribution and modification notices.
+Final author information and target-weight redistribution review remain pending.

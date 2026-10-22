@@ -9,7 +9,8 @@ refinement. First-stage training establishes reusable EM segmentation
 capabilities; second-stage training specializes the complete model on target
 data with LightFT or full-parameter fine-tuning.
 
-[Project page](https://oxidationreduction.github.io/UniSEM-ISBI/) · [Models](models/README.md) ·
+[Project page](https://oxidationreduction.github.io/UniSEM-ISBI/) ·
+[Run in Colab](https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb) · [Models](models/README.md) ·
 [Installation](docs/installation.md) · [Your data](docs/data.md) ·
 [Specialization](docs/specialization.md) · [Evaluation](docs/evaluation.md)
 
@@ -29,9 +30,14 @@ an improvement or residual-error case, drag the divider, and inspect Raw and
 GT with synchronized zoom. The GIF shows existing predictions, not online
 inference. Press Ctrl+C in the server terminal to stop.
 
+To segment an image of your own, open the [Colab notebook](docs/colab.md).
+It prepares the model environment, downloads the first-stage model and its
+matching RF, and lets you upload, inspect, segment, and download your data.
+
 This repository provides the research reference implementation and static
-project page. Model weights remain **local release candidates**, not public
-downloads. The manuscript and supplement are Chinese drafts;
+project page. First-stage weights are distributed separately through
+[Hugging Face](https://huggingface.co/dreamBuilder/UniSEM); target LightFT and
+FullFT assets remain local release candidates. The manuscript and supplement are Chinese drafts;
 code, documentation, and the website are English. Final author and citation
 metadata remain to be supplied.
 
@@ -66,8 +72,10 @@ The static viewer runs independently on Windows.
 
 ## Segment your own image
 
-Place the locally prepared candidate artifacts in `artifacts/`. Exact filenames,
-hashes, and RF pairings are in [models/manifest.json](models/manifest.json).
+Download the first-stage model and paired RF from the model repository, or use
+the Colab notebook to obtain and verify them automatically. For local use, place
+the files in `artifacts/`. Exact filenames, hashes, immutable download URLs,
+and RF pairings are in [models/manifest.json](models/manifest.json).
 
 ```bash
 unisem infer --dataset emneuron \
@@ -77,7 +85,7 @@ unisem infer --dataset emneuron \
   --input datasets/example.tif --output outputs/example.h5 --device cuda
 ```
 
-For LightFT, also provide the matching first-stage model:
+For locally available LightFT assets, also provide the matching first-stage model:
 
 ```bash
 unisem infer --dataset waferem \
@@ -118,9 +126,10 @@ src/unisem/    model, adapters, training, inference, graph processing, metrics
 configs/       current study protocol and reproducibility mapping
 examples/      Python API use and explicit input manifests
 models/        model cards, pairings, hashes, and release status
+notebooks/     upload, segment, inspect, and download in Colab
 site/          offline-capable page, viewer, real examples, and GIF
 tools/         preview, asset preparation, validation, and packaging
-artifacts/     local candidate weights and RFs; ignored by Git
+artifacts/     downloaded weights and local target candidates; ignored by Git
 ```
 
 [Deployment](docs/deployment.md) explains the GitHub Pages workflow and local preview.

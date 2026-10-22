@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#6742b8">
-  <meta name="description" content="UniSEM connects a reusable electron-microscopy segmentation model with efficient target specialization through two-stage learning.">
-  <title>UniSEM | Two-Stage Training and Efficient Specialization</title>
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="description" content="Prompt-free EM neuron segmentation with a reusable generalist model and efficient target specialization. Explore real predictions or segment your data in Colab.">
+  <title>UniSEM | EM neuron segmentation</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
@@ -13,92 +13,30 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="wordmark" href="#"><span class="brand-symbol" aria-hidden="true">U</span>UniSEM<span class="wordmark-dot">.</span></a>
-    <nav aria-label="Main navigation">
-      <a href="#method">Method</a><a href="#evidence">Evidence</a><a href="#explore">Explore</a><a href="#reuse">Use the code</a>
-    </nav>
-    <a class="header-paper" href="assets/paper.pdf?v=2f1f1c6c219d">Paper <span aria-hidden="true">↗</span></a>
+    <a class="wordmark" href="#">UniSEM</a>
+    <nav aria-label="Main navigation"><a href="#explore">Explore</a><a href="#method">Method</a><a href="#evidence">Results</a><a href="#reuse">Resources</a></nav>
+    <a class="header-paper" href="assets/paper.pdf?v=2f1f1c6c219d">Paper ↗</a>
   </header>
-
   <main id="main">
     <section class="hero section-shell" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="small-rule"></span> ELECTRON MICROSCOPY · INSTANCE SEGMENTATION</p>
-        <h1 id="hero-title">An EM generalist.<br> A target specialist.<br> <em>One reusable model.</em></h1>
-        <p class="hero-description">UniSEM learns prompt-free neuron segmentation across EM data, then specializes through limited labels and a small parameter update.</p>
-        <div class="hero-actions"><a class="button primary" href="#explore">Explore real predictions <span aria-hidden="true">↗</span></a><a class="button text-button" href="assets/paper.pdf?v=2f1f1c6c219d">Read the draft <span aria-hidden="true">↗</span></a></div>
-        <div class="hero-facts">
-          <div><strong>~¼</strong><span>target labels<small>Two-stage vs. target-only training</small></span></div>
-          <div><strong>4.1<span>%</span></strong><span>updated parameters<small>LightFT vs. full fine-tuning</small></span></div>
-        </div>
-        <p class="hero-boundary">Observed in the WaferEM setting. Parameter count is not a speed measurement.</p>
-      </div>
-      <div class="hero-visual">
-        <div class="visual-kicker"><span class="status-dot"></span> ACTUAL MODEL OUTPUT <span>WaferEM · 8 nm</span></div>
+      <p class="eyebrow">EM neuron instance segmentation</p>
+      <h1 id="hero-title">Fine detail.<br>Efficient specialization.</h1>
+      <p class="hero-description">A prompt-free EM model that learns across data<br class="desktop-break"> and becomes a target specialist with lightweight updates.</p>
+      <div class="hero-actions"><a class="button primary" href="#explore">Explore examples</a><a class="button secondary" href="https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb">Run on your data ↗</a></div>
+      <figure class="hero-visual">
         <div class="em-triptych">
-          <figure><img src="assets/crops/typical_improvement_z080_raw.png" alt="Electron-microscopy image of tightly packed neuronal processes" width="256" height="256"><figcaption><span>01</span> Raw EM</figcaption></figure>
-          <figure class="feature-result"><img src="assets/crops/typical_improvement_z080_source160.png" alt="UniSEM two-stage segmentation of the same neuronal region" width="256" height="256"><figcaption><span>02</span> UniSEM</figcaption></figure>
-          <figure><img src="assets/crops/typical_improvement_z080_gt.png" alt="Ground-truth instance segmentation of the same region" width="256" height="256"><figcaption><span>03</span> Ground truth</figcaption></figure>
+          <figure><img src="assets/crops/typical_improvement_z080_raw.png" alt="Raw electron microscopy crop showing tightly packed neuronal processes" width="256" height="256"><figcaption>Raw EM</figcaption></figure>
+          <figure><img src="assets/crops/typical_improvement_z080_source160.png" alt="UniSEM two-stage segmentation of the same neuronal region" width="256" height="256"><figcaption>UniSEM</figcaption></figure>
+          <figure><img src="assets/crops/typical_improvement_z080_gt.png" alt="Ground-truth instance segmentation of the same region" width="256" height="256"><figcaption>Ground truth</figcaption></figure>
         </div>
-        <div class="visual-foot"><span class="pill">PRECOMPUTED</span><span>Same region. Matched instance colors.<br> Two-stage model · 160 target slices.</span><a href="#explore" aria-label="Open interactive comparison">↓</a></div>
-      </div>
+        <figcaption class="hero-caption">Actual predictions · WaferEM · 160 target slices · matched instance colors</figcaption>
+      </figure>
+      <div class="hero-facts"><div><strong>~¼</strong><span>of the target labels<br><small>Two-stage vs. target-only training</small></span></div><div><strong>4.1%</strong><span>of the updated parameters<br><small>LightFT vs. full fine-tuning</small></span></div></div>
+      <p class="hero-boundary">Measured in the reported WaferEM setting. The parameter ratio describes the update set.</p>
     </section>
-
-    <div class="project-bar section-shell"><span>Two-stage learning</span><i aria-hidden="true"></i><span>Prompt-free dense prediction</span><i aria-hidden="true"></i><span>Efficient specialization</span><a href="assets/supplement.pdf?v=b7bf4176d18c">Supplementary material <span aria-hidden="true">↗</span></a></div>
-
-    <section id="abstract" class="section-shell abstract-section section-space">
-      <div class="section-margin"><p class="eyebrow">THE IDEA</p><h2>Learn broadly.<br> Adapt precisely.</h2></div>
-      <div class="abstract-copy">
-        <p class="lead">Thin neuronal boundaries, weak membrane contrast, and changes in acquisition conditions make electron-microscopy instance segmentation difficult to reuse across datasets.</p>
-        <p>UniSEM links generalist learning and target specialization in a two-stage framework. In the first stage, NeuroStruct is trained on multi-source EM data. It combines the prompt-free dense prediction interface of µSAM with an HQ-inspired cross-layer correction branch to predict foreground, center distances, and boundary distances. In the second stage, the complete model is specialized on target data. LightFT freezes the original encoder weights while updating Q/V low-rank branches in all 24 encoder blocks together with the dense heads.</p>
-        <p>In the reported EMNeuron and WaferEM comparisons, UniSEM achieves lower overall VOI and ARAND than the listed external baselines. Structure and training-stage comparisons support the design. After source training, approximately one quarter of the target labels outperforms target-only training with all labels; LightFT reaches near-full-fine-tuning quality while updating approximately 4.1% as many parameters.</p>
-        <p class="fine-print">The evaluation concerns 2D instances within individual slices. Cross-slice identity reconstruction and general claims about all EM datasets are outside the reported evidence.</p>
-      </div>
-    </section>
-
-    <section id="method" class="method-section section-space">
+<section id="explore" class="explore-section section-space">
       <div class="section-shell">
-        <div class="section-heading"><div><p class="eyebrow">METHOD</p><h2>A complete model, reused.</h2></div><p>The first stage learns a reusable dense predictor.<br> The second stage learns a target expert.</p></div>
-        <figure class="method-figure"><img src="assets/method.svg" width="1320" height="440" alt="Two-stage UniSEM pipeline: source EM trains NeuroStruct into a reusable generalist; target labels and LightFT produce a specialist; dense fields are converted to instances through a shared workflow."><figcaption>Both stages learn the same three dense output fields. Random-forest fitting is a separate part of instance generation, not a neural-training stage.</figcaption></figure>
-        <div class="method-explainer">
-          <div><span class="method-number">01</span><h3>NeuroStruct</h3><p>A SAM-initialized ViT-L and dense decoder provide prompt-free predictions. An early/final-feature branch adds a three-channel logit correction.</p></div>
-          <div><span class="method-number">02</span><h3>LightFT</h3><p>Retain the original encoder weights. Update Q/V LoRA in all 24 blocks, the dense decoder, and the correction branch to specialize the complete model.</p></div>
-          <div><span class="method-number">03</span><h3>From fields to instances</h3><p>Overlapping predictions are blended; watershed fragments are merged with a route-specific random forest. The same output interface supports reuse.</p></div>
-        </div>
-        <p class="credit-line">Built on ideas from <a href="https://github.com/computational-cell-analytics/micro-sam">µSAM</a>, <a href="https://github.com/SysCV/sam-hq">HQ-SAM</a>, <a href="https://github.com/facebookresearch/segment-anything">SAM</a>, and <a href="https://arxiv.org/abs/2106.09685">LoRA</a>. UniSEM evaluates their task-specific integration, source-model reuse, and target specialization.</p>
-        <details class="author-figure"><summary>Inspect the author’s full architecture figure <span aria-hidden="true">+</span></summary><a href="assets/author-overview.pdf"><img src="assets/author-overview.png" loading="lazy" alt="Full author-provided UniSEM architecture figure, available as a vector PDF"></a><p><a href="assets/author-overview.pdf">Open the original vector figure ↗</a></p></details>
-      </div>
-    </section>
-
-    <section id="evidence" class="section-shell section-space evidence-section">
-      <div class="section-heading"><div><p class="eyebrow">EVIDENCE</p><h2>Four questions.<br> One experimental story.</h2></div><p>Frozen results from the current draft.<br> Lower VOI and ARAND are better.</p></div>
-
-      <article class="evidence-block">
-        <div class="evidence-copy"><p class="eyebrow">01 / EXTERNAL COMPARISONS</p><h3>Does the complete system segment well?</h3><p>UniSEM has the lowest overall VOI and ARAND among the displayed comparisons on both datasets. The merge component need not follow the same ranking.</p><p class="fine-print">Methods retain their native training and instance-generation pipelines. This is a comparison of complete systems.</p></div>
-        <div class="evidence-data"><div class="segmented-control" role="group" aria-label="Benchmark dataset"><button class="active" type="button" data-benchmark="emneuron" aria-pressed="true">EMNeuron</button><button type="button" data-benchmark="waferem" aria-pressed="false">WaferEM</button></div><div class="table-wrap" id="baseline-table"></div><p class="table-note" id="baseline-note"></p><p class="rank-key"><strong>Best</strong> · <u>Second best</u> · values are means, with no SD in this comparison.</p></div>
-      </article>
-
-      <article class="evidence-block">
-        <div class="evidence-copy"><p class="eyebrow">02 / MODEL DESIGN</p><h3>Which dense structure works?</h3><p>Combining early detail and final-layer context gives the lowest mean error among these four source-model configurations. A final-feature residual alone does not improve the dense decoder.</p><p class="fine-print">Configurations include their corresponding head structures and initializations; the result supports this design choice rather than isolating a single causal mechanism.</p></div>
-        <div class="evidence-data"><div class="table-wrap" id="structure-table"></div><p class="table-note">EMNeuron · 8 volumes equally weighted · mean ± sample SD, n = 3. All configurations retain the base dense decoder and use watershed.</p></div>
-      </article>
-
-      <article class="evidence-block">
-        <div class="evidence-copy"><p class="eyebrow">03 / TRAINING STAGES</p><h3>Why learn before specializing?</h3><p>Source training provides a stronger starting point than official SAM with a random dense head. Target training then improves the transferred model on WaferEM. The two stages answer different needs.</p><p class="fine-print">Checkmarks denote neural training only. All three rows fit their own target random forest using 625 labeled slices.</p></div>
-        <div class="evidence-data"><div class="table-wrap" id="stages-table"></div><p class="table-note">WaferEM · target adaptation set fixed. Source-only: one checkpoint; target-only and two-stage: mean ± sample SD, n = 3.</p></div>
-      </article>
-
-      <article class="efficiency-block">
-        <div class="efficiency-heading"><p class="eyebrow">04 / EFFICIENT SPECIALIZATION</p><h3>A large model can be practical to update.</h3><p>The reusable source model reduces the target-label requirement. LightFT trades a small quality difference for a much smaller update set.</p></div>
-        <div class="efficiency-grid"><div><h4>Annotation budget</h4><p class="panel-intro">Two-stage training with 160 target slices improves on target-only training with 625.</p><div class="table-wrap" id="annotation-table"></div><p class="table-note">Matched LightFT updates · mean ± sample SD, n = 3. Budgets cover neural training, monitoring, and random-forest fitting.</p></div><div><h4>Parameter budget</h4><p class="panel-intro">All-block LoRA plus dense heads retains most of the observed FullFT improvement.</p><div class="table-wrap" id="parameters-table"></div><p class="table-note">625 target slices · mean ± sample SD. Decoder + HQ: n = 2; other rows: n = 3. M denotes trainable neural parameters, not elapsed time.</p></div></div>
-        <div class="evidence-interpretation"><strong>Read the trade-off.</strong><p>The HQ branch offers a lightweight update interface, but unfreezing it alone does not improve this comparison. The effective LightFT update set also includes encoder LoRA. FullFT has a lower mean and lower observed seed variability.</p></div>
-      </article>
-      <p class="source-link"><a href="data/results.json">Download the displayed values and source hashes ↗</a> · Tables follow the manuscript; shared endpoints do not count as extra independent runs.</p>
-    </section>
-
-    <section id="explore" class="explore-section section-space">
-      <div class="section-shell">
-        <div class="section-heading"><div><p class="eyebrow">PREDICTION EXPLORER</p><h2>Inspect the contact.<br> See the remaining errors.</h2></div><div><span class="precomputed-badge"><span class="status-dot"></span> PRECOMPUTED PREDICTIONS</span><p>No image upload. No model runs in the browser.</p></div></div>
+        <div class="section-heading"><div><p class="eyebrow">Interactive examples</p><h2>See the difference.</h2></div><div><p class="section-intro">Compare actual precomputed predictions.<br>For your own images, <a href="https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb">open the Colab demo ↗</a>.</p></div></div>
         <div class="explorer-controls">
           <label class="case-control">Case<select id="case-select"><option value="typical_improvement">Typical improvement · z = 80</option><option value="minimum_improvement">Residual merge / regression · z = 27</option></select></label>
           <label>Left<select id="left-select"></select></label><label>Right<select id="right-select"></select></label>
@@ -124,27 +62,69 @@
             <details><summary>How these cases were selected</summary><p id="selection-note"></p><p>Every panel uses the same crop. Prediction colors follow maximum full-slice GT overlap, while actual prediction boundaries remain visible. A merged prediction stays a single filled region.</p></details>
           </aside>
         </div>
+<div class="film-section">
+      <div class="section-margin"><h3>Two cases in motion.</h3><p>A ten-second comparison of the same predictions.</p><button type="button" class="button primary" id="film-toggle" aria-pressed="false">Play comparison <span aria-hidden="true">▶</span></button><p class="fine-print">The animation plays only when requested.</p><a class="subtle-link" href="assets/comparison.gif" download>Download GIF ↧</a></div>
+      <figure class="film-figure"><img id="comparison-film" src="assets/comparison-poster.png" data-animation="assets/comparison.gif" data-poster="assets/comparison-poster.png" width="960" height="420" loading="lazy" alt="Animated comparison of raw EM, target-only 625-slice and two-stage 160-slice predictions, and ground truth for one improvement and one regression case"><figcaption>Source initialization helps in the aggregate; local regressions are still visible.</figcaption></figure>
+    </div>
+<details class="more-examples"><summary>More examples across EMNeuron and WaferEM</summary><div class="details-body"><p>Reference model configurations at matched locations.</p><a class="historical-figure" href="assets/qualitative-comparison.pdf"><img src="assets/qualitative-comparison.png" loading="lazy" width="2600" height="1000" alt="Reference-configuration comparison across EMNeuron and WaferEM, retaining original method labels, yellow arrows, and red circles"></a><p class="fine-print">The upper and lower rows show EMNeuron and WaferEM examples. The displayed LightFT configuration updates only the decoder/HQ branch and does not include the current all-block Q/V LoRA. The figure’s TokenUnify-1B column is not the 500M baseline in the quantitative table. Colors are not guaranteed to identify the same GT instance across these methods. <a href="assets/qualitative-comparison.pdf">Open the original figure ↗</a></p></div></details>
         <noscript><p class="notice">The interactive controls require JavaScript. The real prediction examples remain available as images below and in the supplementary PDF.</p></noscript>
       </div>
     </section>
-
-    <section class="section-shell film-section section-space">
-      <div class="section-margin"><p class="eyebrow">TEN SECONDS, TWO CASES</p><h2>From a difference<br> to a closer look.</h2><p>A wipe between existing predictions.<br> No synthetic images or new inference.</p><button type="button" class="button primary" id="film-toggle" aria-pressed="false">Play comparison <span aria-hidden="true">▶</span></button><p class="fine-print">Animation starts only when requested.<br> Reduced-motion preferences are respected.</p><a class="subtle-link" href="assets/comparison.gif" download>Download GIF ↧</a></div>
-      <figure class="film-figure"><img id="comparison-film" src="assets/comparison-poster.png" data-animation="assets/comparison.gif" data-poster="assets/comparison-poster.png" width="960" height="420" loading="lazy" alt="Animated comparison of raw EM, target-only 625-slice and two-stage 160-slice predictions, and ground truth for one improvement and one regression case"><figcaption>Source initialization helps in the aggregate; local regressions are still visible.</figcaption></figure>
+<section id="method" class="method-section section-space">
+      <div class="section-shell">
+        <div class="section-heading"><div><p class="eyebrow">The method</p><h2>Learn once. Specialize efficiently.</h2></div><p>The first stage learns a reusable dense predictor.<br> The second stage learns a target expert.</p></div>
+        <figure class="method-figure"><img src="assets/method.svg" width="1200" height="550" alt="Two-stage UniSEM pipeline: source EM trains NeuroStruct into a reusable generalist; target labels and LightFT produce a specialist; dense fields are converted to instances through a shared workflow."><figcaption>Both stages learn the same three dense output fields. Random-forest fitting is a separate part of instance generation, not a neural-training stage.</figcaption></figure>
+        <div class="method-explainer">
+          <div><span class="method-number">01</span><h3>NeuroStruct</h3><p>A SAM-initialized ViT-L and dense decoder provide prompt-free predictions. An early/final-feature branch adds a three-channel logit correction.</p></div>
+          <div><span class="method-number">02</span><h3>LightFT</h3><p>Retain the original encoder weights. Update Q/V LoRA in all 24 blocks, the dense decoder, and the correction branch to specialize the complete model.</p></div>
+          <div><span class="method-number">03</span><h3>From fields to instances</h3><p>Overlapping predictions are blended; watershed fragments are merged with a route-specific random forest. The same output interface supports reuse.</p></div>
+        </div>
+        <p class="credit-line">Built on ideas from <a href="https://github.com/computational-cell-analytics/micro-sam">µSAM</a>, <a href="https://github.com/SysCV/sam-hq">HQ-SAM</a>, <a href="https://github.com/facebookresearch/segment-anything">SAM</a>, and <a href="https://arxiv.org/abs/2106.09685">LoRA</a>. UniSEM evaluates their task-specific integration, source-model reuse, and target specialization.</p>
+<details class="abstract-details"><summary>Read the full abstract</summary><div class="details-body abstract-copy">
+        <p class="lead">Thin neuronal boundaries, weak membrane contrast, and changes in acquisition conditions make electron-microscopy instance segmentation difficult to reuse across datasets.</p>
+        <p>UniSEM links generalist learning and target specialization in a two-stage framework. In the first stage, NeuroStruct is trained on multi-source EM data. It combines the prompt-free dense prediction interface of µSAM with an HQ-inspired cross-layer correction branch to predict foreground, center distances, and boundary distances. In the second stage, the complete model is specialized on target data. LightFT freezes the original encoder weights while updating Q/V low-rank branches in all 24 encoder blocks together with the dense heads.</p>
+        <p>In the reported EMNeuron and WaferEM comparisons, UniSEM achieves lower overall VOI and ARAND than the listed external baselines. Structure and training-stage comparisons support the design. After source training, approximately one quarter of the target labels outperforms target-only training with all labels; LightFT reaches near-full-fine-tuning quality while updating approximately 4.1% as many parameters.</p>
+        <p class="fine-print">The evaluation concerns 2D instances within individual slices. Cross-slice identity reconstruction and general claims about all EM datasets are outside the reported evidence.</p>
+      </div></details>
+        <details class="author-figure"><summary>Inspect the author’s full architecture figure <span aria-hidden="true">+</span></summary><a href="assets/author-overview.pdf"><img src="assets/author-overview.png" loading="lazy" alt="Full author-provided UniSEM architecture figure, available as a vector PDF"></a><p><a href="assets/author-overview.pdf">Open the original vector figure ↗</a></p></details>
+      </div>
     </section>
+<section id="evidence" class="section-shell section-space evidence-section">
+      <div class="section-heading"><div><p class="eyebrow">The evidence</p><h2>Quality, design, and efficient adaptation.</h2></div><p>Frozen results from the current draft.<br> Lower VOI and ARAND are better.</p></div>
 
-    <section class="historical-section section-space">
-      <div class="section-shell"><div class="section-heading"><div><p class="eyebrow">QUALITATIVE EXAMPLES</p><h2>A wider view of the task.</h2></div><p>Reference model configurations · matched locations.<br> These are not the current LightFT predictions.</p></div><a class="historical-figure" href="assets/qualitative-comparison.pdf"><img src="assets/qualitative-comparison.png" loading="lazy" width="2600" height="1000" alt="Reference-configuration comparison across EMNeuron and WaferEM, retaining original method labels, yellow arrows, and red circles"></a><p class="fine-print">The upper and lower rows show EMNeuron and WaferEM examples. The displayed LightFT configuration updates only the decoder/HQ branch and does not include the current all-block Q/V LoRA. The figure’s TokenUnify-1B column is not the 500M baseline in the quantitative table. Colors are not guaranteed to identify the same GT instance across these methods. <a href="assets/qualitative-comparison.pdf">Open the original figure ↗</a></p></div>
+<div class="evidence-tabs" role="tablist" aria-label="Experimental evidence"><button type="button" role="tab" id="evidence-tab-0" data-evidence="0" aria-controls="evidence-panel-0" aria-selected="true" tabindex="0">External comparisons</button><button type="button" role="tab" id="evidence-tab-1" data-evidence="1" aria-controls="evidence-panel-1" aria-selected="false" tabindex="-1">Model design</button><button type="button" role="tab" id="evidence-tab-2" data-evidence="2" aria-controls="evidence-panel-2" aria-selected="false" tabindex="-1">Training stages</button><button type="button" role="tab" id="evidence-tab-3" data-evidence="3" aria-controls="evidence-panel-3" aria-selected="false" tabindex="-1">Efficiency</button></div>
+      <article class="evidence-block evidence-panel" id="evidence-panel-0" role="tabpanel" aria-labelledby="evidence-tab-0" tabindex="0">
+        <div class="evidence-copy"><p class="eyebrow">01 / EXTERNAL COMPARISONS</p><h3>Lower instance errors on both datasets.</h3><p>UniSEM has the lowest overall VOI and ARAND among the displayed comparisons on both datasets. The merge component need not follow the same ranking.</p><p class="fine-print">Methods retain their native training and instance-generation pipelines. This is a comparison of complete systems.</p></div>
+        <div class="evidence-data"><div class="segmented-control" role="group" aria-label="Benchmark dataset"><button class="active" type="button" data-benchmark="emneuron" aria-pressed="true">EMNeuron</button><button type="button" data-benchmark="waferem" aria-pressed="false">WaferEM</button></div><div class="table-wrap" id="baseline-table"></div><p class="table-note" id="baseline-note"></p><p class="rank-key"><strong>Best</strong> · <u>Second best</u> · values are means, with no SD in this comparison.</p></div>
+      </article>
+
+      <article class="evidence-block evidence-panel" id="evidence-panel-1" role="tabpanel" aria-labelledby="evidence-tab-1" tabindex="0" hidden>
+        <div class="evidence-copy"><p class="eyebrow">02 / MODEL DESIGN</p><h3>Early detail meets final-layer context.</h3><p>Combining early detail and final-layer context gives the lowest mean error among these four source-model configurations. A final-feature residual alone does not improve the dense decoder.</p><p class="fine-print">Configurations include their corresponding head structures and initializations; the result supports this design choice rather than isolating a single causal mechanism.</p></div>
+        <div class="evidence-data"><div class="table-wrap" id="structure-table"></div><p class="table-note">EMNeuron · 8 volumes equally weighted · mean ± sample SD, n = 3. All configurations retain the base dense decoder and use watershed.</p></div>
+      </article>
+
+      <article class="evidence-block evidence-panel" id="evidence-panel-2" role="tabpanel" aria-labelledby="evidence-tab-2" tabindex="0" hidden>
+        <div class="evidence-copy"><p class="eyebrow">03 / TRAINING STAGES</p><h3>Both training stages contribute.</h3><p>Source training provides a stronger starting point than official SAM with a random dense head. Target training then improves the transferred model on WaferEM. The two stages answer different needs.</p><p class="fine-print">Checkmarks denote neural training only. All three rows fit their own target random forest using 625 labeled slices.</p></div>
+        <div class="evidence-data"><div class="table-wrap" id="stages-table"></div><p class="table-note">WaferEM · target adaptation set fixed. Source-only: one checkpoint; target-only and two-stage: mean ± sample SD, n = 3.</p></div>
+      </article>
+
+      <article class="efficiency-block evidence-panel" id="evidence-panel-3" role="tabpanel" aria-labelledby="evidence-tab-3" tabindex="0" hidden>
+        <div class="efficiency-heading"><p class="eyebrow">04 / EFFICIENT SPECIALIZATION</p><h3>A large model. A small update set.</h3><p>The reusable source model reduces the target-label requirement. LightFT trades a small quality difference for a much smaller update set.</p></div>
+        <div class="efficiency-grid"><div><h4>Annotation budget</h4><p class="panel-intro">Two-stage training with 160 target slices improves on target-only training with 625.</p><div class="table-wrap" id="annotation-table"></div><p class="table-note">Matched LightFT updates · mean ± sample SD, n = 3. Budgets cover neural training, monitoring, and random-forest fitting.</p></div><div><h4>Parameter budget</h4><p class="panel-intro">All-block LoRA plus dense heads retains most of the observed FullFT improvement.</p><div class="table-wrap" id="parameters-table"></div><p class="table-note">625 target slices · mean ± sample SD. Decoder + HQ: n = 2; other rows: n = 3. M denotes trainable neural parameters, not elapsed time.</p></div></div>
+        <div class="evidence-interpretation"><strong>How to read this comparison</strong><p>The HQ branch offers a lightweight update interface, but unfreezing it alone does not improve this comparison. The effective LightFT update set also includes encoder LoRA. FullFT has a lower mean and lower observed seed variability.</p></div>
+      </article>
+      <p class="source-link"><a href="data/results.json">Download the displayed values and source hashes ↗</a> · Tables follow the manuscript; shared endpoints do not count as extra independent runs.</p>
     </section>
-
     <section id="reuse" class="section-shell section-space reuse-section">
-      <div class="section-heading"><div><p class="eyebrow">REUSE THE WORK</p><h2>Research code.<br> A clear starting point.</h2></div><a class="button primary" href="https://github.com/oxidationreduction/UniSEM-ISBI">View GitHub <span aria-hidden="true">↗</span></a></div>
-      <div class="reuse-grid"><div class="quickstart"><p class="code-label">MODEL ENVIRONMENT · LINUX / PYTHON 3.10</p><pre><code>python -m pip install -e .
-unisem --help</code></pre><p>The release separates model construction, dense prediction, instance generation, and evaluation. Start with the installation and checkpoint instructions; the viewer itself needs only a local static server.</p><a href="downloads/unisem-source.zip">Code and reproducibility documentation ↗</a></div><div id="models" class="models-copy"><h3>Models &amp; reproducibility</h3><p>Use a source model as a reusable starting point, then choose LightFT or full fine-tuning for target specialization. Checkpoint identity, output semantics, and training protocol belong with each model.</p><a class="resource-row" href="models.html"><span>Model cards &amp; checkpoint availability</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/paper.pdf?v=2f1f1c6c219d"><span>Paper · Chinese draft</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/supplement.pdf?v=b7bf4176d18c"><span>Supplement · protocols and full results</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/cases.json"><span>Viewer metadata &amp; selection rules</span><span aria-hidden="true">↗</span></a></div></div>
-      <div class="release-note"><span class="pill">RESEARCH PREVIEW</span><p>This page accompanies a manuscript draft. It does not imply acceptance at ISBI. Code, model weights, and sample images have separate availability and licensing conditions; the software license does not grant permission to redistribute WaferEM data. <a href="licenses.html">Sources and licenses ↗</a></p></div>
+      <div class="section-heading"><div><p class="eyebrow">Resources</p><h2>Start with your data.</h2></div><p>Explore the model, run a segmentation,<br>or build on the research code.</p></div>
+      <div class="resource-grid">
+        <div><h3>Run in Colab.</h3><p>Upload a grayscale TIFF or HDF5 image. Run the first-stage generalist model, inspect the instances, and download the labels.</p><a class="button primary" href="https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb">Open the notebook ↗</a><p class="fine-print">Runs in your own Colab session. The notebook guides setup, inference, and export.</p></div>
+        <div><h3>Use the code.</h3><p>The reference implementation includes model construction, dense prediction, instance generation, and evaluation.</p><a class="resource-row" href="https://github.com/oxidationreduction/UniSEM-ISBI"><span>GitHub repository</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="https://huggingface.co/dreamBuilder/UniSEM"><span>First-stage model &amp; matching RF</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="downloads/unisem-source.zip"><span>Download source archive</span><span aria-hidden="true">↓</span></a><a class="resource-row" href="models.html"><span>Model cards &amp; reproducibility</span><span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="paper-links"><a href="assets/paper.pdf?v=2f1f1c6c219d">Paper · Chinese draft ↗</a><a href="assets/supplement.pdf?v=b7bf4176d18c">Supplement ↗</a><a href="assets/cases.json">Example metadata ↗</a><a href="licenses.html">Sources &amp; licenses ↗</a></div>
+      <p class="release-note fine-print">Research release. Code, weights, and sample images retain their own licenses and source attribution.</p>
     </section>
   </main>
-
-  <footer class="site-footer section-shell"><div><a class="wordmark" href="#">UniSEM<span class="wordmark-dot">.</span></a><p>Generalist learning. Target specialization.</p></div><p>Original static implementation, with project-page organization inspired by<br> <a href="https://nerfies.github.io/">Nerfies</a> and the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>.<br> <a href="licenses.html">Attribution &amp; asset provenance</a></p><a href="#" class="back-top">Back to top ↑</a></footer>
+  <footer class="site-footer section-shell"><a class="wordmark" href="#">UniSEM</a><p>Project-page organization informed by <a href="https://nerfies.github.io/">Nerfies</a> and the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>.</p><a href="#" class="back-top">Back to top ↑</a></footer>
 </body>
 </html>

@@ -11,7 +11,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {".git", "artifacts", "__pycache__", ".pytest_cache", ".venv", "build", "dist"}
-TEXT_SUFFIXES = {".py", ".json", ".md", ".toml", ".yml", ".yaml", ".html", ".css", ".js", ".txt"}
+TEXT_SUFFIXES = {".py", ".json", ".ipynb", ".md", ".toml", ".yml", ".yaml", ".html", ".css", ".js", ".txt"}
 
 
 def source_files(root: Path = ROOT):
@@ -66,6 +66,35 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def check_model_manifest(manifest: dict) -> list[str]:
+    """Require a verifiable download identity for each published asset."""
+    errors = []
+    for asset in manifest.get("assets", []):
+        name = asset.get("path", "<unnamed asset>")
+        published = asset.get("release_status") == "published"
+        url = asset.get("download_url")
+        if published:
+            revision = asset.get("revision", "")
+            if not re.fullmatch(r"[a-f0-9]{40}", revision):
+                errors.append(f"Published model needs an immutable revision: {name}")
+            parsed = urlsplit(url or "")
+            if parsed.scheme != "https" or parsed.hostname != "huggingface.co" or parsed.username or parsed.query:
+                errors.append(f"Published model needs a public HTTPS download: {name}")
+            if f"/resolve/{revision}/" not in parsed.path or not parsed.path.endswith("/" + Path(name).name):
+                errors.append(f"Published model URL does not match revision/file: {name}")
+            if not asset.get("license"):
+                errors.append(f"Published model is missing license metadata: {name}")
+        elif url:
+            errors.append(f"Unpublished model must not claim a download: {name}")
+        if not re.fullmatch(r"[a-f0-9]{64}", asset.get("sha256", "")):
+            errors.append(f"Invalid model SHA256: {name}")
+    if manifest.get("public_download_url") and not any(
+        asset.get("release_status") == "published" for asset in manifest.get("assets", [])
+    ):
+        errors.append("A public model page requires at least one published asset.")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check-artifacts", action="store_true", help="Also hash the large local model files")
@@ -83,9 +112,15 @@ def main() -> int:
             content = path.read_text(encoding="utf-8-sig")
             if any(token in content for token in private) or windows_path.search(content):
                 errors.append(f"Private development reference: {path.relative_to(ROOT)}")
-            if path.suffix == ".json":
+            if path.suffix in {".json", ".ipynb"}:
                 try:
-                    json.loads(content)
+                    parsed_json = json.loads(content)
+                    if path.suffix == ".ipynb":
+                        if "TO_BE_PINNED" in content:
+                            errors.append(f"Notebook revision is not pinned: {path.relative_to(ROOT)}")
+                        for cell in parsed_json.get("cells", []):
+                            if cell.get("outputs") or cell.get("execution_count") is not None:
+                                errors.append(f"Notebook contains saved execution data: {path.relative_to(ROOT)}")
                 except ValueError as error:
                     errors.append(f"Invalid JSON {path.relative_to(ROOT)}: {error}")
     errors.extend(check_links())
@@ -93,8 +128,7 @@ def main() -> int:
     artifact_count = 0
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("public_download_url") is not None:
-            errors.append("This local-only release must not claim a hosted model download.")
+        errors.extend(check_model_manifest(manifest))
         if args.check_artifacts:
             for asset in manifest["assets"]:
                 file = ROOT / asset["path"]

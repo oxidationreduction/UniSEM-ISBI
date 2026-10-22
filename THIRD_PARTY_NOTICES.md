@@ -65,6 +65,11 @@ versions are listed in `constraints.txt`.
 
 Users download EMNeuron directly from the official source and are responsible
 for following the dataset card and citing the corresponding publication.
+The first-stage weight release reviewed the official dataset card at revision
+`62df92b933550cc2a5d3849fe8543191c356f2d4`, which declares MIT and is publicly
+accessible without gating. Its trained source model and source-domain RF are
+distributed separately under Apache-2.0 with SAM attribution and a modification
+notice; see `models/huggingface/` for the release card, checksums, and notices.
 
 ## WaferEM/MEC Dataset
 

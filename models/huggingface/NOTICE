@@ -1,0 +1,22 @@
+UniSEM first-stage EMNeuron model and source-domain RF
+
+This distribution contains a modified derivative of the Segment Anything
+ViT-L model by Meta Platforms, Inc. and affiliates. SAM is licensed under
+Apache License 2.0. The original copyright and license notices remain applicable.
+https://github.com/facebookresearch/segment-anything
+
+Modifications: first-stage EMNeuron training, prompt-free dense decoding,
+HQ-inspired cross-layer refinement, and a reduced inference export that omits
+unused interactive heads and optimizer/training metadata. The accompanying
+random forest was fitted for the ordered 55-feature source-domain pipeline.
+
+EMNeuron dataset: https://huggingface.co/datasets/yanchaoz/EMNeuron
+The official dataset card declares MIT at revision
+62df92b933550cc2a5d3849fe8543191c356f2d4. No training images are redistributed.
+
+The implementation builds on micro-SAM, torch-em, ELF, the SAM-HQ refinement
+idea, and LoRA. These projects retain their own source-code licenses and
+publication attribution. Official HQ-SAM refinement weights are not included.
+
+The upstream statements above describe the sources reviewed for this release;
+they do not relicense external datasets or the separate target-model assets.

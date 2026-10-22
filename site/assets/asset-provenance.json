@@ -114,6 +114,20 @@
       "source": "figures/14-results-show.pdf",
       "role": "author_manuscript_asset",
       "release_status": "local_research_preview"
+    },
+    {
+      "file": "assets/method.svg",
+      "sha256": "041f039f54a9631641bc383d4ef435ad4ba1735a3bc44fc3b18fb712ef5a8050",
+      "source": "Original editable UniSEM website vector",
+      "role": "presentation_schematic",
+      "release_status": "public_project_page"
+    },
+    {
+      "file": "assets/favicon.svg",
+      "sha256": "bece8f6c352f5238dd6dd50919e7efeb113851c30b49ec15d506acfe451df1a4",
+      "source": "Original editable UniSEM website vector",
+      "role": "site_identity",
+      "release_status": "public_project_page"
     }
   ],
   "generated": [

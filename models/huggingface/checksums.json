@@ -1,0 +1,22 @@
+{
+  "model": "UniSEM first-stage EMNeuron",
+  "license": "apache-2.0",
+  "files": [
+    {
+      "filename": "unisem_stage1_emneuron_vitl.pt",
+      "bytes": 1279754552,
+      "sha256": "62821463f1d11c5adcc172337b78cf7fab10665add023de3aaf35373a7f2c1fe"
+    },
+    {
+      "filename": "unisem_stage1_emneuron_full55_rf.joblib",
+      "bytes": 76295596,
+      "sha256": "13c35acb2d085e292c4b6a44c6bd7840fb9a6839fa7cab1d5d5f63ab8ea3e4df"
+    }
+  ],
+  "source_dataset": {
+    "id": "yanchaoz/EMNeuron",
+    "revision_reviewed": "62df92b933550cc2a5d3849fe8543191c356f2d4",
+    "license_declared": "mit",
+    "training_images_redistributed": false
+  }
+}

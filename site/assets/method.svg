@@ -1,71 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 440" role="img" aria-labelledby="title description">
-  <title id="title">UniSEM: a reusable model through two-stage learning</title>
-  <desc id="description">Multi-source electron microscopy trains NeuroStruct into a generalist. Target data specializes it with LightFT: the original encoder is frozen while Q/V LoRA and dense heads are updated. Foreground and distance predictions are converted into 2D instances through the shared instance-generation workflow.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" role="img" aria-labelledby="title description">
+  <title id="title">UniSEM two-stage training and shared instance generation</title>
+  <desc id="description">First-stage training on multi-source EMNeuron data produces a reusable NeuroStruct generalist with a SAM-initialized ViT-L, a micro-SAM dense decoder, and HQ-style cross-layer correction. Second-stage LightFT specializes that checkpoint using target labels: original encoder weights are frozen while Q/V LoRA in all 24 blocks and the decoder and correction head are trained. Both models predict foreground and distance fields for the shared two-dimensional instance workflow.</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="m0 0 8 4-8 4z" fill="#8f7aa9"/></marker>
-    <marker id="purple-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="m0 0 8 4-8 4z" fill="#6742b8"/></marker>
-    <pattern id="source-lines" width="11" height="11" patternUnits="userSpaceOnUse"><path d="M0 11 11 0" stroke="#d6cbe7" stroke-width="1"/></pattern>
-    <style>text{font-family:Inter,'Segoe UI',Arial,sans-serif;fill:#211d30}.small{font-size:15px;fill:#766b84}.label{font-size:13px;font-weight:700;letter-spacing:1.8px;fill:#6742b8}.heading{font-size:25px;font-weight:650}.body{font-size:17px}.purple{fill:#6742b8}.mono{font-size:15px;fill:#62556f}</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#55555d"/></marker>
+    <marker id="blue-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#0066cc"/></marker>
+    <style>
+      text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#1d1d1f;font-size:24px}
+      .stage{font-size:26px;font-weight:700;letter-spacing:-.5px}
+      .heading{font-size:28px;font-weight:700;letter-spacing:-.6px}
+      .muted{fill:#55555d}
+      .blue{fill:#0066cc}
+      .strong{font-weight:600}
+    </style>
   </defs>
-  <text class="label" x="25" y="28">STAGE 1  /  GENERALIST LEARNING</text>
-  <text class="label" x="785" y="28">STAGE 2  /  TARGET SPECIALIZATION</text>
-  <line x1="744" y1="18" x2="744" y2="300" stroke="#ded5eb" stroke-dasharray="4 7"/>
-  <g transform="translate(25 72)">
-    <rect x="8" y="8" width="122" height="119" rx="4" fill="#eee8f5" stroke="#c9badb"/>
-    <rect x="4" y="4" width="122" height="119" rx="4" fill="#f2edf7" stroke="#c9badb"/>
-    <rect width="122" height="119" rx="4" fill="white" stroke="#c9badb"/>
-    <rect x="13" y="13" width="96" height="93" rx="2" fill="url(#source-lines)"/>
-    <text class="body" x="61" y="157" text-anchor="middle">Multi-source EM</text>
-    <text class="small" x="61" y="182" text-anchor="middle">EMNeuron</text>
-  </g>
-  <path d="M176 132 H220" stroke="#8f7aa9" stroke-width="1.7" marker-end="url(#arrow)"/>
-  <g transform="translate(237 60)">
-    <rect width="263" height="212" rx="6" fill="white" stroke="#d3c7e3"/>
-    <text class="heading" x="20" y="35">NeuroStruct</text>
-    <rect x="18" y="54" width="226" height="45" rx="3" fill="#f1edf8"/>
-    <text class="body" x="131" y="82" text-anchor="middle">SAM-initialized ViT-L</text>
-    <path d="M131 101 V116" stroke="#8f7aa9" marker-end="url(#arrow)"/>
-    <rect x="18" y="126" width="226" height="31" rx="3" fill="#f7f4fb" stroke="#ddd3eb"/>
-    <text class="mono" x="131" y="147" text-anchor="middle">µSAM dense decoder</text>
-    <rect x="18" y="166" width="226" height="31" rx="3" fill="#f7f4fb" stroke="#ddd3eb"/>
-    <text class="mono" x="131" y="187" text-anchor="middle">HQ-style cross-layer correction</text>
-  </g>
-  <path d="M515 132 H559" stroke="#8f7aa9" stroke-width="1.7" marker-end="url(#arrow)"/>
-  <g transform="translate(575 87)">
-    <path d="M59 0 119 34v68l-60 34L0 102V34z" fill="#6742b8"/>
-    <path d="m0 34 59 34 60-34M59 68v68M59 0v68" stroke="#a58bd1" stroke-width="1" fill="none"/>
-    <text x="59" y="178" class="body" text-anchor="middle">Generalist</text>
-    <text x="59" y="201" class="small" text-anchor="middle">Complete checkpoint</text>
-  </g>
-  <path d="M709 132 H775" stroke="#6742b8" stroke-width="1.7" marker-end="url(#purple-arrow)"/>
-  <g transform="translate(792 60)">
-    <rect width="303" height="212" rx="6" fill="white" stroke="#bba4db"/>
-    <text class="heading" x="21" y="35">LightFT</text>
-    <text class="small" x="21" y="62">Target labels + source checkpoint</text>
-    <rect x="20" y="80" width="262" height="34" rx="3" fill="#f0edf4"/>
-    <circle cx="34" cy="97" r="4" fill="#9a92a5"/>
-    <text class="mono" x="48" y="103">Freeze original encoder weights</text>
-    <rect x="20" y="124" width="262" height="34" rx="3" fill="#f0e9fb"/>
-    <circle cx="34" cy="141" r="4" fill="#6742b8"/>
-    <text class="mono" x="48" y="147">Train Q/V LoRA · all 24 blocks</text>
-    <rect x="20" y="168" width="262" height="28" rx="3" fill="#f0e9fb"/>
-    <circle cx="34" cy="182" r="4" fill="#6742b8"/>
-    <text class="mono" x="48" y="187">Train decoder + correction head</text>
-  </g>
-  <path d="M1112 132 H1150" stroke="#6742b8" stroke-width="1.7" marker-end="url(#purple-arrow)"/>
-  <g transform="translate(1165 87)">
-    <path d="M59 0 119 34v68l-60 34L0 102V34z" fill="#3e266f"/>
-    <path d="m0 34 59 34 60-34M59 68v68M59 0v68" stroke="#9d7bce" stroke-width="1" fill="none"/>
-    <text class="body" x="59" y="178" text-anchor="middle">Target expert</text>
-    <text class="small" x="59" y="201" text-anchor="middle">Same dense interface</text>
-  </g>
-  <path d="M370 277v49M1224 279v47" fill="none" stroke="#c8bbd8" stroke-width="1.4"/>
-  <path d="M370 325h854" fill="none" stroke="#c8bbd8" stroke-width="1.4"/>
-  <path d="M778 326v25" fill="none" stroke="#8f7aa9" stroke-width="1.4" marker-end="url(#arrow)"/>
-  <rect x="300" y="365" width="955" height="52" rx="4" fill="white" stroke="#d9cfe7"/>
-  <text class="body" x="326" y="397">Foreground + center distance + boundary distance</text>
-  <path d="M750 390h45" stroke="#8f7aa9" stroke-width="1.4" marker-end="url(#arrow)"/>
-  <text class="body purple" x="816" y="397">Shared instance generation</text>
-  <text class="body" x="1196" y="397" text-anchor="middle">2D instances</text>
-  <path d="M1115 390h28" stroke="#8f7aa9" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text class="stage" x="24" y="32">1. First-stage training</text>
+  <text class="stage" x="650" y="32">2. Target specialization</text>
+  <rect x="24" y="58" width="518" height="246" rx="8" fill="#f5f5f7" stroke="#d2d2d7"/>
+  <text class="heading" x="48" y="101">NeuroStruct</text>
+  <text class="muted" x="48" y="141">Multi-source EM · EMNeuron</text>
+  <line x1="48" y1="160" x2="518" y2="160" stroke="#d2d2d7"/>
+  <text x="48" y="196">SAM-initialized ViT-L</text>
+  <text x="48" y="234">µSAM dense decoder</text>
+  <text x="48" y="272">HQ-style cross-layer correction</text>
+  <path d="M283 305V326" fill="none" stroke="#55555d" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="24" y="338" width="518" height="66" rx="6" fill="#1d1d1f"/>
+  <text x="283" y="380" text-anchor="middle" style="fill:white;font-weight:600">Reusable generalist checkpoint</text>
+  <path d="M543 371H592V182H632" fill="none" stroke="#0066cc" stroke-width="2" marker-end="url(#blue-arrow)"/>
+  <text class="blue strong" x="594" y="145" text-anchor="middle">Reuse</text>
+  <rect x="650" y="58" width="526" height="246" rx="8" fill="#f5f5f7" stroke="#d2d2d7"/>
+  <text class="heading" x="674" y="101">LightFT</text>
+  <text class="muted" x="674" y="141">Source checkpoint + target labels</text>
+  <line x1="674" y1="160" x2="1152" y2="160" stroke="#d2d2d7"/>
+  <text x="674" y="196">Freeze original encoder weights</text>
+  <text class="blue" x="674" y="234">Train Q/V LoRA · all 24 blocks</text>
+  <text class="blue" x="674" y="272">Train decoder + correction head</text>
+  <path d="M913 305V326" fill="none" stroke="#55555d" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="650" y="338" width="526" height="66" rx="6" fill="#1d1d1f"/>
+  <text x="913" y="380" text-anchor="middle" style="fill:white;font-weight:600">Target expert · same dense interface</text>
+  <path d="M283 405V433M913 405V433" fill="none" stroke="#55555d" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="24" y="444" width="1152" height="90" rx="8" fill="white" stroke="#d2d2d7"/>
+  <text x="48" y="478" class="strong">Foreground + center distance + boundary distance</text>
+  <text x="48" y="514" class="muted">Window fusion → watershed → matching RF → 2D instances</text>
 </svg>

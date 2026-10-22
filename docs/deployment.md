@@ -38,8 +38,13 @@ The same static files power local preview and GitHub Pages.
 
 ## Model availability
 
-Source code and the static project page are separate from model-weight
-distribution. The candidate checkpoints and RFs remain outside Git and the
-Pages artifact. Their identities and local preparation status are recorded in
-`models/manifest.json`; a successful website deployment does not create a
-public weight download or change their licensing status.
+First-stage weights and the paired source RF are hosted in
+https://huggingface.co/dreamBuilder/UniSEM. The Colab notebook in this repository
+uses immutable code and model revisions and verifies each file's SHA256.
+Model files remain outside Git and the Pages artifact. Target checkpoints and
+RFs remain local candidates, as recorded per asset in `models/manifest.json`.
+
+After changing the notebook, test it in a clean Colab runtime before updating
+its validation record. A browser-page preview or a CPU unit test alone does not
+verify the Colab installation and real-model inference. Keep notebook outputs
+and execution counts cleared in the committed file.
