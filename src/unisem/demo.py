@@ -6,9 +6,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
+from http.client import HTTPException
 from pathlib import Path
+from time import sleep
 from urllib.parse import quote
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 from zipfile import ZIP_DEFLATED, ZipFile
 
 import numpy as np
@@ -26,6 +29,46 @@ def file_sha256(path: str | Path) -> str:
         for chunk in iter(lambda: handle.read(4 * 1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _download_partial(url: str, partial: Path) -> None:
+    """Resume interrupted transfers, with at most three download attempts per call."""
+    for attempt in range(3):
+        offset = partial.stat().st_size if partial.exists() else 0
+        request = Request(url, headers={"Range": f"bytes={offset}-"}) if offset else url
+        try:
+            with urlopen(request, timeout=180) as response:
+                status = getattr(response, "status", 200)
+                headers = getattr(response, "headers", {})
+                length = int(headers["Content-Length"]) if headers.get("Content-Length") is not None else None
+                total = None
+                if status == 206:
+                    match = re.fullmatch(r"bytes (\d+)-(\d+)/(\d+|\*)", headers.get("Content-Range", ""))
+                    if match is None or int(match[1]) != offset or int(match[2]) < offset:
+                        raise ValueError(f"Invalid Content-Range while resuming {partial.name} at byte {offset}")
+                    range_length = int(match[2]) - offset + 1
+                    total = int(match[3]) if match[3] != "*" else None
+                    if (length is not None and length != range_length) or (total is not None and int(match[2]) >= total):
+                        raise ValueError(f"Inconsistent response lengths for {partial.name}")
+                    length = range_length
+                elif status == 200:
+                    offset = 0  # A server may ignore Range; replace rather than duplicate bytes.
+                else:
+                    raise OSError(f"Unexpected HTTP status {status}")
+                received = 0
+                with partial.open("ab" if status == 206 else "wb") as output:
+                    while chunk := response.read(4 * 1024 * 1024):
+                        output.write(chunk)
+                        received += len(chunk)
+                if length is not None and received != length:
+                    raise OSError(f"Truncated response: received {received} of {length} bytes")
+                if total is not None and offset + received != total:
+                    raise OSError(f"Incomplete file: received {offset + received} of {total} bytes")
+            return
+        except (OSError, HTTPException) as error:
+            if attempt == 2:
+                raise RuntimeError(f"Download failed after 3 attempts for {partial.name}: {error}. Any partial data is retained for retry.") from error
+            sleep(attempt + 1)
 
 
 def download_demo_assets(
@@ -54,11 +97,10 @@ def download_demo_assets(
                 url = f"https://huggingface.co/dreamBuilder/UniSEM/resolve/{revision}/{encoded_filename}"
             else:
                 url = f"https://modelscope.cn/api/v1/models/dreamBuilder/UniSEM/repo?Revision={revision}&FilePath={encoded_filename}"
-            with urlopen(url, timeout=180) as response, partial.open("wb") as output:
-                while chunk := response.read(4 * 1024 * 1024):
-                    output.write(chunk)
+            if not partial.exists() or file_sha256(partial) != expected:
+                _download_partial(url, partial)
             if file_sha256(partial) != expected:
-                raise ValueError(f"Checksum mismatch after downloading {filename}; the asset was not loaded")
+                raise ValueError(f"Checksum mismatch after downloading {filename}; the asset was not loaded. Remove {partial.name} before retrying.")
             partial.replace(path)
         result[filename] = path
     return result

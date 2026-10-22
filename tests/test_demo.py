@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from http.client import IncompleteRead
 from io import BytesIO
 from urllib.parse import quote
 from zipfile import ZipFile
@@ -133,3 +134,115 @@ def test_invalid_download_provider_does_not_access_network(tmp_path, monkeypatch
     with pytest.raises(ValueError, match="Provider"):
         download_demo_assets(destination, "a" * 40, provider=provider)
     assert not destination.exists()
+
+
+class HTTPBytes(BytesIO):
+    def __init__(self, data, status=200, headers=None, failure=None):
+        super().__init__(data)
+        self.status = status
+        self.headers = headers or {}
+        self.failure = failure
+
+    def read(self, size=-1):
+        data = super().read(size)
+        if not data and self.failure is not None:
+            raise self.failure
+        return data
+
+
+@pytest.fixture
+def tiny_model(monkeypatch):
+    content = b"abcdef"
+    monkeypatch.setattr(demo, "DEMO_ASSETS", {"model.pt": hashlib.sha256(content).hexdigest()})
+    monkeypatch.setattr(demo, "sleep", lambda _: None)
+    return content
+
+
+@pytest.mark.parametrize("failure", [None, BrokenPipeError("connection interrupted"), IncompleteRead(b"", 3)], ids=["truncated-content-length", "broken-pipe", "incomplete-read"])
+def test_download_resumes_partial_response(tmp_path, monkeypatch, tiny_model, failure):
+    calls = []
+    replies = [
+        HTTPBytes(b"abc", headers={"Content-Length": "6"}, failure=failure),
+        HTTPBytes(b"def", status=206, headers={"Content-Length": "3", "Content-Range": "bytes 3-5/6"}),
+    ]
+
+    def respond(request, timeout):
+        calls.append(request)
+        return replies.pop(0)
+
+    monkeypatch.setattr(demo, "urlopen", respond)
+    result = download_demo_assets(tmp_path, "a" * 40, provider="modelscope")
+    assert isinstance(calls[0], str)
+    assert calls[1].get_header("Range") == "bytes=3-"
+    assert result["model.pt"].read_bytes() == tiny_model
+    assert not (tmp_path / "model.pt.part").exists()
+
+
+def test_download_restarts_when_server_ignores_range(tmp_path, monkeypatch, tiny_model):
+    (tmp_path / "model.pt.part").write_bytes(b"abc")
+
+    def respond(request, timeout):
+        assert request.get_header("Range") == "bytes=3-"
+        return HTTPBytes(tiny_model, headers={"Content-Length": "6"})
+
+    monkeypatch.setattr(demo, "urlopen", respond)
+    result = download_demo_assets(tmp_path, "a" * 40)
+    assert result["model.pt"].read_bytes() == tiny_model
+
+
+def test_download_continues_when_range_response_is_only_part_of_file(tmp_path, monkeypatch, tiny_model):
+    (tmp_path / "model.pt.part").write_bytes(b"abc")
+    replies = [
+        HTTPBytes(b"de", status=206, headers={"Content-Length": "2", "Content-Range": "bytes 3-4/6"}),
+        HTTPBytes(b"f", status=206, headers={"Content-Length": "1", "Content-Range": "bytes 5-5/6"}),
+    ]
+    offsets = []
+
+    def respond(request, timeout):
+        offsets.append(request.get_header("Range"))
+        return replies.pop(0)
+
+    monkeypatch.setattr(demo, "urlopen", respond)
+    assert download_demo_assets(tmp_path, "a" * 40)["model.pt"].read_bytes() == tiny_model
+    assert offsets == ["bytes=3-", "bytes=5-"]
+
+
+@pytest.mark.parametrize("content_range", ["bytes 2-4/6", "bytes 3-2/6", "not-a-range"])
+def test_download_rejects_wrong_resume_offset_before_appending(tmp_path, monkeypatch, tiny_model, content_range):
+    partial = tmp_path / "model.pt.part"
+    partial.write_bytes(b"abc")
+    monkeypatch.setattr(demo, "urlopen", lambda *args, **kwargs: HTTPBytes(b"def", status=206, headers={"Content-Range": content_range}))
+    with pytest.raises(ValueError, match="Content-Range"):
+        download_demo_assets(tmp_path, "a" * 40)
+    assert partial.read_bytes() == b"abc"
+    assert not (tmp_path / "model.pt").exists()
+
+
+def test_download_failures_have_bounded_retries_and_keep_partial(tmp_path, monkeypatch, tiny_model):
+    calls = []
+
+    def respond(request, timeout):
+        calls.append(request)
+        raise BrokenPipeError("connection interrupted")
+
+    partial = tmp_path / "model.pt.part"
+    partial.write_bytes(b"abc")
+    monkeypatch.setattr(demo, "urlopen", respond)
+    with pytest.raises(RuntimeError, match="after 3 attempts for model.pt.part"):
+        download_demo_assets(tmp_path, "a" * 40)
+    assert len(calls) == 3
+    assert partial.read_bytes() == b"abc"
+    assert not (tmp_path / "model.pt").exists()
+
+
+def test_complete_partial_is_verified_without_another_request(tmp_path, monkeypatch, tiny_model):
+    (tmp_path / "model.pt.part").write_bytes(tiny_model)
+    monkeypatch.setattr(demo, "urlopen", lambda *args, **kwargs: pytest.fail("A complete verified partial needs no network"))
+    assert download_demo_assets(tmp_path, "a" * 40)["model.pt"].read_bytes() == tiny_model
+
+
+def test_download_never_promotes_wrong_checksum(tmp_path, monkeypatch, tiny_model):
+    monkeypatch.setattr(demo, "urlopen", lambda *args, **kwargs: HTTPBytes(b"wrong!", headers={"Content-Length": "6"}))
+    with pytest.raises(ValueError, match="Checksum mismatch"):
+        download_demo_assets(tmp_path, "a" * 40)
+    assert not (tmp_path / "model.pt").exists()
