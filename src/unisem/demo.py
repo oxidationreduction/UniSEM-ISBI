@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+from urllib.parse import quote
 from urllib.request import urlopen
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -27,8 +28,15 @@ def file_sha256(path: str | Path) -> str:
     return digest.hexdigest()
 
 
-def download_demo_assets(destination: str | Path, revision: str) -> dict[str, Path]:
-    """Download the fixed public model/RF pair and check every file before use."""
+def download_demo_assets(
+    destination: str | Path,
+    revision: str,
+    *,
+    provider: str = "huggingface",
+) -> dict[str, Path]:
+    """Download the fixed public pair from an approved provider and verify hashes."""
+    if provider not in ("huggingface", "modelscope"):
+        raise ValueError("Provider must be huggingface or modelscope")
     if len(revision) != 40 or any(character not in "0123456789abcdef" for character in revision):
         raise ValueError("Use the published 40-character model revision, not a moving branch")
     directory = Path(destination)
@@ -41,7 +49,11 @@ def download_demo_assets(destination: str | Path, revision: str) -> dict[str, Pa
                 raise ValueError(f"Checksum mismatch for existing asset {filename}; replace it with the published file")
         else:
             partial = path.with_suffix(path.suffix + ".part")
-            url = f"https://huggingface.co/dreamBuilder/UniSEM/resolve/{revision}/{filename}"
+            encoded_filename = quote(filename, safe="")
+            if provider == "huggingface":
+                url = f"https://huggingface.co/dreamBuilder/UniSEM/resolve/{revision}/{encoded_filename}"
+            else:
+                url = f"https://modelscope.cn/api/v1/models/dreamBuilder/UniSEM/repo?Revision={revision}&FilePath={encoded_filename}"
             with urlopen(url, timeout=180) as response, partial.open("wb") as output:
                 while chunk := response.read(4 * 1024 * 1024):
                     output.write(chunk)

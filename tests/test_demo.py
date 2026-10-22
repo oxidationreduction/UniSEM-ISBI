@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
 import json
+from io import BytesIO
+from urllib.parse import quote
 from zipfile import ZipFile
 
 import h5py
@@ -8,6 +11,7 @@ import numpy as np
 import pytest
 import tifffile
 
+import unisem.demo as demo
 from unisem.demo import download_demo_assets, export_results, label_array, load_input, overlay_image, select_input
 from unisem.inference import normalize_raw
 
@@ -88,3 +92,44 @@ def test_download_rejects_branch_and_existing_wrong_asset(tmp_path):
     (tmp_path / "unisem_stage1_emneuron_vitl.pt").write_bytes(b"wrong model")
     with pytest.raises(ValueError, match="Checksum mismatch"):
         download_demo_assets(tmp_path, "a" * 40)
+
+
+@pytest.mark.parametrize("provider", [None, "huggingface", "modelscope"], ids=["default-huggingface", "explicit-huggingface", "explicit-modelscope"])
+def test_download_uses_fixed_provider_urls_and_checks_both_assets(tmp_path, monkeypatch, provider):
+    revision = "a" * 40
+    # Tiny bytes exercise download, hashing and final filenames without model I/O.
+    contents = {"model with space.pt": b"model", "rf+fixed.joblib": b"random forest"}
+    monkeypatch.setattr(demo, "DEMO_ASSETS", {name: hashlib.sha256(data).hexdigest() for name, data in contents.items()})
+    expected_urls = []
+    for name in contents:
+        encoded = quote(name, safe="")
+        expected_urls.append(
+            f"https://modelscope.cn/api/v1/models/dreamBuilder/UniSEM/repo?Revision={revision}&FilePath={encoded}"
+            if provider == "modelscope" else
+            f"https://huggingface.co/dreamBuilder/UniSEM/resolve/{revision}/{encoded}"
+        )
+    calls = []
+
+    def response(url, timeout):
+        assert timeout == 180
+        calls.append(url)
+        index = expected_urls.index(url)
+        return BytesIO(list(contents.values())[index])
+
+    monkeypatch.setattr(demo, "urlopen", response)
+    downloaded = download_demo_assets(tmp_path, revision) if provider is None else download_demo_assets(tmp_path, revision, provider=provider)
+    assert calls == expected_urls
+    assert {name: path.read_bytes() for name, path in downloaded.items()} == contents
+    assert not list(tmp_path.glob("*.part"))
+
+
+@pytest.mark.parametrize("provider", ["unknown", "https://other.example", None])
+def test_invalid_download_provider_does_not_access_network(tmp_path, monkeypatch, provider):
+    def unexpected_network(*args, **kwargs):
+        pytest.fail("An invalid provider must be rejected before network access")
+
+    monkeypatch.setattr(demo, "urlopen", unexpected_network)
+    destination = tmp_path / "assets"
+    with pytest.raises(ValueError, match="Provider"):
+        download_demo_assets(destination, "a" * 40, provider=provider)
+    assert not destination.exists()
