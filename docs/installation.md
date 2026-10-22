@@ -4,6 +4,9 @@ The project page and the segmentation model have separate requirements.
 
 ## View the project page
 
+The hosted page is https://oxidationreduction.github.io/UniSEM-ISBI/.
+To use the same files locally:
+
 Python 3.10 or newer is sufficient. No installation, model weights, network
 connection, or GPU is needed for the bundled prediction viewer:
 

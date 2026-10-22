@@ -38,12 +38,12 @@ LightFT or TokenUnify-500M.
 
 ## Release preparation
 
-Local source and candidate models are separate deliverables. The source
+Source code and candidate models are separate deliverables. The source
 package excludes original training data, private storage paths, and optimizer
 states. Original-source and sanitized-file hashes are recorded separately.
 Neural payloads contain tensors and public configuration; RFs retain their
 original trusted joblib representation and exact hashes.
 
-Display crops and model candidates are prepared for local author review.
+Display crops accompany the manuscript; candidate model files remain local.
 Asset permissions remain separate from code licensing. No public weight URL,
 DOI, or conference acceptance is asserted.

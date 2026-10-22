@@ -9,7 +9,7 @@ refinement. First-stage training establishes reusable EM segmentation
 capabilities; second-stage training specializes the complete model on target
 data with LightFT or full-parameter fine-tuning.
 
-[Project page](site/index.html) · [Models](models/README.md) ·
+[Project page](https://oxidationreduction.github.io/UniSEM-ISBI/) · [Models](models/README.md) ·
 [Installation](docs/installation.md) · [Your data](docs/data.md) ·
 [Specialization](docs/specialization.md) · [Evaluation](docs/evaluation.md)
 
@@ -17,7 +17,8 @@ data with LightFT or full-parameter fine-tuning.
 
 ## Explore the results first
 
-No GPU, model installation, or internet connection is required:
+Browse the [hosted project page](https://oxidationreduction.github.io/UniSEM-ISBI/),
+or run the same viewer locally without a GPU, model installation, or internet connection:
 
 ```bash
 python tools/serve.py
@@ -28,8 +29,9 @@ an improvement or residual-error case, drag the divider, and inspect Raw and
 GT with synchronized zoom. The GIF shows existing predictions, not online
 inference. Press Ctrl+C in the server terminal to stop.
 
-This is a **local research release candidate**, without a remote repository
-or cloud deployment. The manuscript and supplement are Chinese drafts;
+This repository provides the research reference implementation and static
+project page. Model weights remain **local release candidates**, not public
+downloads. The manuscript and supplement are Chinese drafts;
 code, documentation, and the website are English. Final author and citation
 metadata remain to be supplied.
 
@@ -121,6 +123,7 @@ tools/         preview, asset preparation, validation, and packaging
 artifacts/     local candidate weights and RFs; ignored by Git
 ```
 
+[Deployment](docs/deployment.md) explains the GitHub Pages workflow and local preview.
 [Validation](docs/validation.md) records completed checks and their limits.
 The source export excludes model weights, run outputs, credentials, and the
 development repository's history.
@@ -137,6 +140,6 @@ dense branch does not load official HQ-SAM refinement weights.
 The project-page structure and interaction take inspiration from
 [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template)
 and [Nerfies](https://nerfies.github.io/), with retained website-license notices.
-Data, paper figures, and trained models retain separate terms. Local crops
+Data, paper figures, and trained models retain separate terms. Display crops
 and candidate weights are not automatically cleared for public redistribution
 by the code license. See [third-party notices](THIRD_PARTY_NOTICES.md).

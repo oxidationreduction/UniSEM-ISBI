@@ -74,7 +74,7 @@ for following the dataset card and citing the corresponding publication.
 - Full dataset redistribution in this repository: none
 
 Neither full WaferEM volumes nor prepared full-volume arrays are included.
-The local project page contains two existing display crops and a historical
+The project page contains two existing display crops and a historical
 paper figure for author review; they retain separate dataset/figure terms.
 The source-code license does not apply to those images. Candidate target
 weights are held locally until derivative-weight redistribution conditions
@@ -90,6 +90,21 @@ are resolved. No public download or permission to redistribute is claimed.
   see the site footer and site/LICENSE.md. Template analytics and external
   runtime dependencies are not included. The website license does not cover
   third-party microscopy imagery, paper figures, datasets, or trained weights.
+
+## WaferEM display attribution
+
+WaferEM samples: cyd0806/wafer_EM, distributed via Hugging Face:
+https://huggingface.co/datasets/cyd0806/wafer_EM
+
+The public dataset listing identifies CC BY-NC 4.0:
+https://creativecommons.org/licenses/by-nc/4.0/
+
+The non-commercial research visualizations use documented XY mean-downsampling
+of raw images, stride-2 label sampling, fixed crops, and pseudocolor instance
+rendering. Actual prediction boundaries are preserved. The GIF compares existing
+predictions. These assets retain dataset terms, separately from software and
+website-code licenses. Access conditions can additionally apply; no model-weight
+redistribution permission is inferred.
 
 ## Trained Random-Forest Artifacts
 
