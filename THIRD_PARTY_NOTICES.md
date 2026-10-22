@@ -74,8 +74,8 @@ for following the dataset card and citing the corresponding publication.
 - Full dataset redistribution in this repository: none
 
 Neither full WaferEM volumes nor prepared full-volume arrays are included.
-The project page contains two existing display crops and a historical
-paper figure for author review; they retain separate dataset/figure terms.
+The project page contains two existing display crops and a reference-configuration
+figure for author review; they retain separate dataset/figure terms.
 The source-code license does not apply to those images. Candidate target
 weights are held locally until derivative-weight redistribution conditions
 are resolved. No public download or permission to redistribute is claimed.

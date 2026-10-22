@@ -54,7 +54,7 @@ function createTable(target, headings, rows, fields, options = {}) {
 function renderEvidence(data) {
   function benchmark(name) {
     createTable($("#baseline-table"), ["Method", "VOIsum ↓", "VOIm ↓", "ARAND ↓"], data.baseline[name], ["name", "voi", "voi_merge", "arand"], {caption: name === "emneuron" ? "EMNeuron external comparisons" : "WaferEM external comparisons", highlight: (row) => row.name.startsWith("UniSEM")});
-    $("#baseline-note").textContent = name === "emneuron" ? "EMNeuron · 1,003 slices: mean within each volume, then equal weight over 8 volumes. Source UniSEM uses the frozen historical checkpoint." : "WaferEM · means over the fixed 125-slice test volume. UniSEM LightFT and FullFT each summarize 3 seeds; external methods retain their recorded checkpoints.";
+    $("#baseline-note").textContent = name === "emneuron" ? "EMNeuron · 1,003 slices: mean within each volume, then equal weight over 8 volumes. Source UniSEM uses the frozen source checkpoint." : "WaferEM · means over the fixed 125-slice test volume. UniSEM LightFT and FullFT each summarize 3 seeds; external methods retain their recorded checkpoints.";
     document.querySelectorAll("[data-benchmark]").forEach((button) => { const active = button.dataset.benchmark === name; button.classList.toggle("active", active); button.setAttribute("aria-pressed", String(active)); });
   }
   benchmark("emneuron");

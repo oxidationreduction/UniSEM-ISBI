@@ -32,8 +32,8 @@ whole-slice comparison and a disagreement-based crop. Colors correspond
 through GT overlap while preserving actual instance boundaries. Display
 images and metric arrays are different artifacts.
 
-The historical gallery retains the original AAAI image's head-only LightFT
-and TokenUnify-1B identities. It does not relabel them as current all-layer
+The reference gallery retains its head-only LightFT and TokenUnify-1B
+configuration identities. It does not relabel them as current all-layer
 LightFT or TokenUnify-500M.
 
 ## Release preparation

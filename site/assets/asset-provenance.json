@@ -89,14 +89,14 @@
     },
     {
       "file": "assets/paper.pdf",
-      "sha256": "293665b854eacbf18b948b9effda0dfbd36f20d0bd815d88a69dd8b22894fe58",
+      "sha256": "2f1f1c6c219d79e9242e3bee6b8f72e154f8517ea5ff417a4c168cbb1079ac3e",
       "source": "UniSEM-ISBI.pdf",
       "role": "author_manuscript_asset",
       "release_status": "local_research_preview"
     },
     {
       "file": "assets/supplement.pdf",
-      "sha256": "56df520bc3b0c819a2daffa273fea06298325f0473198852ed02af9ab1096da4",
+      "sha256": "b7bf4176d18c60624dcb1934ddbde13be7730d992888059c165e9e7384fd3093",
       "source": "output/UniSEM_ISBI_zh_supplement.pdf",
       "role": "author_manuscript_asset",
       "release_status": "local_research_preview"
@@ -109,7 +109,7 @@
       "release_status": "local_research_preview"
     },
     {
-      "file": "assets/historical-aaai.pdf",
+      "file": "assets/qualitative-comparison.pdf",
       "sha256": "5b8ef1b66b3046853b0cb2b3d164513214fc0820f19ad7e3255f0d774cc71d78",
       "source": "figures/14-results-show.pdf",
       "role": "author_manuscript_asset",
@@ -120,6 +120,6 @@
     "comparison.gif",
     "comparison-poster.png",
     "author-overview.png",
-    "historical-aaai.png"
+    "qualitative-comparison.png"
   ]
 }

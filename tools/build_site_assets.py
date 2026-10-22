@@ -229,19 +229,19 @@ def main() -> None:
     supplement = paper_root / "output" / "UniSEM_ISBI_zh_supplement.pdf"
     for source, name in [(paper, "paper.pdf"), (supplement, "supplement.pdf"),
                          (paper_root / "figures" / "1-overview.pdf", "author-overview.pdf"),
-                         (paper_root / "figures" / "14-results-show.pdf", "historical-aaai.pdf")]:
+                         (paper_root / "figures" / "14-results-show.pdf", "qualitative-comparison.pdf")]:
         shutil.copyfile(source, assets / name)
         asset_sources.append(dict(file=f"assets/{name}", sha256=sha256(source),
                                   source=str(source.relative_to(paper_root)).replace("\\", "/"),
                                   role="author_manuscript_asset", release_status="local_research_preview"))
     render_pdf(assets / "author-overview.pdf", assets / "author-overview.png")
-    render_pdf(assets / "historical-aaai.pdf", assets / "historical-aaai.png", 2600)
+    render_pdf(assets / "qualitative-comparison.pdf", assets / "qualitative-comparison.png", 2600)
     write_json(assets / "asset-provenance.json", {
         "schema": "unisem-site-assets-v1",
         "software_license_is_not_data_permission": True,
         "samples": "Frozen WaferEM crops, local research preview. Source dataset terms apply.",
         "sources": asset_sources,
-        "generated": ["comparison.gif", "comparison-poster.png", "author-overview.png", "historical-aaai.png"],
+        "generated": ["comparison.gif", "comparison-poster.png", "author-overview.png", "qualitative-comparison.png"],
     })
     print(json.dumps({"site": str(args.site_root.resolve()), "copied_crops": 12,
                       "cases": len(case_copy), "gif_duration_seconds": 10,

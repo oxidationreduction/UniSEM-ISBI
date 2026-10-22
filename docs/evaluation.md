@@ -54,5 +54,5 @@ checkpoint does not receive a fabricated standard deviation.
 
 The viewer's attached numbers are existing **whole-slice** scores. The displayed
 256 x 256 ROIs were selected to reveal differences and are not representative
-frequency estimates. Historical qualitative comparisons use their original
+frequency estimates. Reference-configuration qualitative comparisons use their original
 model identities and do not establish the current adapter's numerical results.
