@@ -43,3 +43,16 @@ def test_published_asset_must_pin_matching_file():
     manifest = published_manifest()
     manifest["assets"][0]["download_url"] = "https://huggingface.co/dreamBuilder/UniSEM/resolve/main/model.pt"
     assert any("revision/file" in error for error in release.check_model_manifest(manifest))
+
+
+def test_modelscope_download_pins_revision_and_file():
+    manifest = published_manifest()
+    asset = manifest["assets"][0]
+    asset.update(provider="modelscope", repo_id="dreamBuilder/UniSEM")
+    base = "https://modelscope.cn/api/v1/models/dreamBuilder/UniSEM/repo"
+    asset["download_url"] = f"{base}?Revision={asset['revision']}&FilePath=model.pt"
+    assert release.check_model_manifest(manifest) == []
+    asset["download_url"] = f"{base}?Revision=master&FilePath=model.pt"
+    assert any("revision/file" in error for error in release.check_model_manifest(manifest))
+    asset["download_url"] = f"{base}?Revision={asset['revision']}&FilePath=other.pt"
+    assert any("revision/file" in error for error in release.check_model_manifest(manifest))

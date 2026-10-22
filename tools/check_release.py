@@ -7,7 +7,7 @@ import json
 import re
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {".git", "artifacts", "__pycache__", ".pytest_cache", ".venv", "build", "dist"}
@@ -78,9 +78,21 @@ def check_model_manifest(manifest: dict) -> list[str]:
             if not re.fullmatch(r"[a-f0-9]{40}", revision):
                 errors.append(f"Published model needs an immutable revision: {name}")
             parsed = urlsplit(url or "")
-            if parsed.scheme != "https" or parsed.hostname != "huggingface.co" or parsed.username or parsed.query:
+            if parsed.scheme != "https" or parsed.username is not None or parsed.password is not None or parsed.fragment:
                 errors.append(f"Published model needs a public HTTPS download: {name}")
-            if f"/resolve/{revision}/" not in parsed.path or not parsed.path.endswith("/" + Path(name).name):
+            provider = asset.get("provider", "huggingface")
+            if provider == "huggingface":
+                matches = (parsed.hostname == "huggingface.co" and not parsed.query
+                           and f"/resolve/{revision}/" in parsed.path
+                           and parsed.path.endswith("/" + Path(name).name))
+            elif provider == "modelscope":
+                matches = (parsed.hostname == "modelscope.cn"
+                           and bool(asset.get("repo_id"))
+                           and parsed.path == f"/api/v1/models/{asset.get('repo_id')}/repo"
+                           and parse_qs(parsed.query) == {"Revision": [revision], "FilePath": [Path(name).name]})
+            else:
+                matches = False
+            if not matches:
                 errors.append(f"Published model URL does not match revision/file: {name}")
             if not asset.get("license"):
                 errors.append(f"Published model is missing license metadata: {name}")

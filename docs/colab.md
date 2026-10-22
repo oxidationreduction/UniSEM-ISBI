@@ -11,7 +11,7 @@ project website's example comparison continues to use precomputed predictions.
 1. **Prepare.** Select a GPU runtime and run the setup cell. It installs an
    isolated Python 3.10 environment, checks the fixed source revision and
    downloads the published model/RF pair from
-   [dreamBuilder/UniSEM](https://huggingface.co/dreamBuilder/UniSEM).
+   [ModelScope · dreamBuilder/UniSEM](https://modelscope.cn/models/dreamBuilder/UniSEM).
 2. **Upload.** Supply a grayscale TIFF image, a ZYX TIFF stack, or an HDF5 file.
    Choose the HDF5 dataset key (default `main`) and inspect the shape and dtype.
    An optional existing WaferEM display crop provides a quick example.
@@ -22,7 +22,7 @@ project website's example comparison continues to use precomputed predictions.
    and adjust opacity. Download the result ZIP before the runtime ends.
 
 Uploads stay in the user's Colab runtime; the notebook does not send images to
-the project website, Hugging Face repository, or a project-operated inference
+the project website, ModelScope repository, or a project-operated inference
 server. Colab itself provides the hosted runtime.
 
 ## Input and output
@@ -50,7 +50,7 @@ the repository's `constraints.txt` and package dependencies. The ELF dependency
 comes from `constantinpape/elf`; the unrelated package with the same name on
 PyPI is not substituted.
 
-The notebook pins a 40-character source commit and a 40-character model commit.
+The notebook pins a 40-character source commit and a fixed ModelScope model revision.
 It verifies the two published SHA256 values again immediately before loading.
 Only the matched published random forest is accepted; arbitrary uploaded
 joblib/pickle files are not an input option.

@@ -35,8 +35,8 @@ It prepares the model environment, downloads the first-stage model and its
 matching RF, and lets you upload, inspect, segment, and download your data.
 
 This repository provides the research reference implementation and static
-project page. First-stage weights are distributed separately through
-[Hugging Face](https://huggingface.co/dreamBuilder/UniSEM); target LightFT and
+project page. First-stage weights are prepared for separate distribution through
+[ModelScope](https://modelscope.cn/models/dreamBuilder/UniSEM); target LightFT and
 FullFT assets remain local release candidates. The manuscript and supplement are Chinese drafts;
 code, documentation, and the website are English. Final author and citation
 metadata remain to be supplied.
