@@ -117,14 +117,14 @@
     },
     {
       "file": "assets/method.svg",
-      "sha256": "041f039f54a9631641bc383d4ef435ad4ba1735a3bc44fc3b18fb712ef5a8050",
+      "sha256": "83ff54bbfd0e99340206f54fdd040c7fd911f194ec46b3b31ee5477980d38c8b",
       "source": "Original editable UniSEM website vector",
       "role": "presentation_schematic",
       "release_status": "public_project_page"
     },
     {
       "file": "assets/favicon.svg",
-      "sha256": "bece8f6c352f5238dd6dd50919e7efeb113851c30b49ec15d506acfe451df1a4",
+      "sha256": "e277f0d589ac0800be487a736291cba0eabf38556c71d41a5427844528361c4f",
       "source": "Original editable UniSEM website vector",
       "role": "site_identity",
       "release_status": "public_project_page"

@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#f5f5f7">
   <meta name="description" content="Prompt-free EM neuron segmentation with a reusable generalist model and efficient target specialization. Explore real predictions or segment your data in Colab.">
   <title>UniSEM | EM neuron segmentation</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
+  <link rel="icon" href="assets/favicon.svg?v=e277f0d589ac" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=ae7b8bc2bbb1">
+  <script src="app.js?v=02338399c50e" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -73,7 +73,8 @@
 <section id="method" class="method-section section-space">
       <div class="section-shell">
         <div class="section-heading"><div><p class="eyebrow">The method</p><h2>Learn once. Specialize efficiently.</h2></div><p>The first stage learns a reusable dense predictor.<br> The second stage learns a target expert.</p></div>
-        <figure class="method-figure"><img src="assets/method.svg" width="1200" height="550" alt="Two-stage UniSEM pipeline: source EM trains NeuroStruct into a reusable generalist; target labels and LightFT produce a specialist; dense fields are converted to instances through a shared workflow."><figcaption>Both stages learn the same three dense output fields. Random-forest fitting is a separate part of instance generation, not a neural-training stage.</figcaption></figure>
+        <figure class="author-figure" aria-labelledby="architecture-heading"><h3 id="architecture-heading">Model architecture</h3><a class="architecture-link" href="assets/author-overview.pdf" aria-label="Open the original UniSEM architecture overview as a vector PDF"><img src="assets/author-overview.png" width="2200" height="943" loading="lazy" alt="Author-drawn UniSEM overview showing NeuroStruct dense prediction, LightFT encoder LoRA and trainable dense heads, and the shared multiscale instance-generation workflow"></a><figcaption>NeuroStruct, LightFT, and the shared instance-generation workflow. <a href="assets/author-overview.pdf">Open the full-size vector PDF ↗</a><span class="figure-pan-hint"> Scroll across the figure to inspect its details.</span></figcaption></figure>
+        <figure class="method-figure"><h3>Two-stage training</h3><img src="assets/method.svg?v=83ff54bbfd0e" width="1200" height="550" alt="First-stage training builds a general EM model. Second-stage LightFT trains all-block Q/V LoRA and the dense heads to create a target-specialized model."><figcaption>Both stages learn the same three dense output fields. Random-forest fitting is a separate part of instance generation, not a neural-training stage.</figcaption></figure>
         <div class="method-explainer">
           <div><span class="method-number">01</span><h3>NeuroStruct</h3><p>A SAM-initialized ViT-L and dense decoder provide prompt-free predictions. An early/final-feature branch adds a three-channel logit correction.</p></div>
           <div><span class="method-number">02</span><h3>LightFT</h3><p>Retain the original encoder weights. Update Q/V LoRA in all 24 blocks, the dense decoder, and the correction branch to specialize the complete model.</p></div>
@@ -86,7 +87,6 @@
         <p>In the reported EMNeuron and WaferEM comparisons, UniSEM achieves lower overall VOI and ARAND than the listed external baselines. Structure and training-stage comparisons support the design. After source training, approximately one quarter of the target labels outperforms target-only training with all labels; LightFT reaches near-full-fine-tuning quality while updating approximately 4.1% as many parameters.</p>
         <p class="fine-print">The evaluation concerns 2D instances within individual slices. Cross-slice identity reconstruction and general claims about all EM datasets are outside the reported evidence.</p>
       </div></details>
-        <details class="author-figure"><summary>Inspect the author’s full architecture figure <span aria-hidden="true">+</span></summary><a href="assets/author-overview.pdf"><img src="assets/author-overview.png" loading="lazy" alt="Full author-provided UniSEM architecture figure, available as a vector PDF"></a><p><a href="assets/author-overview.pdf">Open the original vector figure ↗</a></p></details>
       </div>
     </section>
 <section id="evidence" class="section-shell section-space evidence-section">
