@@ -451,18 +451,35 @@ def _save_random_forest(path: str | Path, model: Any, parameters: Mapping[str, A
     )
 
 
+class _FeatureOrderedForest:
+    """Present the public feature order to a forest trained in a stored order."""
+
+    def __init__(self, model: Any, feature_names: tuple[str, ...]) -> None:
+        self.model = model
+        self.classes_ = model.classes_
+        self.n_features_in_ = model.n_features_in_
+        self._columns = [RAG_FEATURE_NAMES.index(name) for name in feature_names]
+
+    def predict_proba(self, features: np.ndarray) -> np.ndarray:
+        matrix = _validate_feature_matrix(features)
+        return self.model.predict_proba(matrix[:, self._columns])
+
+
 def load_random_forest(path: str | Path) -> Any:
-    """Load a random-forest bundle and reject incompatible feature schemas."""
+    """Validate the full55 schema and preserve the forest's training-column order."""
     from joblib import load
 
     payload = load(Path(path))
     if not isinstance(payload, dict) or "model" not in payload:
         raise ValueError("invalid random-forest bundle")
-    feature_names = payload.get("feature_names", payload.get("feature_columns", ()))
-    if tuple(feature_names) != RAG_FEATURE_NAMES:
+    feature_names = tuple(payload.get("feature_names", payload.get("feature_columns", ())))
+    if len(feature_names) != len(RAG_FEATURE_NAMES) or set(feature_names) != set(RAG_FEATURE_NAMES):
         raise ValueError("random-forest bundle uses an incompatible feature schema")
-    if "merge_threshold" in payload and float(payload["merge_threshold"]) != MERGE_THRESHOLD:
-        raise ValueError("random-forest bundle uses an incompatible merge threshold")
+    if "feature_names" in payload and "feature_columns" in payload and feature_names != tuple(payload["feature_columns"]):
+        raise ValueError("random-forest bundle declares conflicting feature orders")
+    for threshold_key in ("merge_threshold", "p_same"):
+        if threshold_key in payload and float(payload[threshold_key]) != MERGE_THRESHOLD:
+            raise ValueError("random-forest bundle uses an incompatible merge threshold")
     if "min_instance_area" in payload and int(payload["min_instance_area"]) != MIN_INSTANCE_AREA:
         raise ValueError("random-forest bundle uses an incompatible minimum area")
     model = payload["model"]
@@ -470,7 +487,7 @@ def load_random_forest(path: str | Path) -> Any:
         raise ValueError("random-forest model does not accept 55 features")
     if set(np.asarray(getattr(model, "classes_", ())).tolist()) != {0, 1}:
         raise ValueError("random-forest model must contain edge classes 0 and 1")
-    return model
+    return model if feature_names == RAG_FEATURE_NAMES else _FeatureOrderedForest(model, feature_names)
 
 
 def _positive_probabilities(model: Any, features: np.ndarray) -> np.ndarray:
