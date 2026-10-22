@@ -1,8 +1,8 @@
 {
   "schema_version": "unisem.assets.v1",
-  "status": "local_candidate_only",
-  "weights_license": "pending_data_and_upstream_redistribution_review",
-  "public_download_url": null,
+  "status": "partially_published",
+  "weights_license": "per_asset",
+  "public_download_url": "https://modelscope.cn/models/dreamBuilder/UniSEM",
   "representative_seed": 12345,
   "source_code_license": "Apache-2.0",
   "neural_schema": "unisem.inference.v2",
@@ -70,7 +70,12 @@
       "bytes": 76295596,
       "path": "artifacts/unisem_stage1_emneuron_full55_rf.joblib",
       "local_download_verified": true,
-      "release_status": "local_candidate_only"
+      "release_status": "published",
+      "provider": "modelscope",
+      "repo_id": "dreamBuilder/UniSEM",
+      "revision": "c074500d3426dfe4d43d47fb237775c2e2c788d5",
+      "license": "apache-2.0",
+      "download_url": "https://modelscope.cn/api/v1/models/dreamBuilder/UniSEM/repo?Revision=c074500d3426dfe4d43d47fb237775c2e2c788d5&FilePath=unisem_stage1_emneuron_full55_rf.joblib"
     },
     {
       "kind": "stage1",
@@ -85,7 +90,12 @@
       "bytes": 1279754552,
       "path": "artifacts/unisem_stage1_emneuron_vitl.pt",
       "local_download_verified": true,
-      "release_status": "local_candidate_only"
+      "release_status": "published",
+      "provider": "modelscope",
+      "repo_id": "dreamBuilder/UniSEM",
+      "revision": "c074500d3426dfe4d43d47fb237775c2e2c788d5",
+      "license": "apache-2.0",
+      "download_url": "https://modelscope.cn/api/v1/models/dreamBuilder/UniSEM/repo?Revision=c074500d3426dfe4d43d47fb237775c2e2c788d5&FilePath=unisem_stage1_emneuron_vitl.pt"
     }
   ],
   "pairs": [

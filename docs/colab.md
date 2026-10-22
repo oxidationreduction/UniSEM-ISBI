@@ -5,6 +5,9 @@
 The notebook runs the first-stage EMNeuron generalist and its matched full55
 random forest in your own Colab runtime. It is a real inference workflow; the
 project website's example comparison continues to use precomputed predictions.
+The first-stage model and matching RF are publicly available from
+[ModelScope · dreamBuilder/UniSEM](https://modelscope.cn/models/dreamBuilder/UniSEM).
+WaferEM LightFT and FullFT assets remain local release candidates.
 
 ## Four steps
 

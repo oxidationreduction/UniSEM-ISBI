@@ -38,9 +38,10 @@ The same static files power local preview and GitHub Pages.
 
 ## Model availability
 
-The release destination for first-stage weights and the paired source RF is ModelScope:
+First-stage weights and the paired source RF are publicly available on ModelScope:
 https://modelscope.cn/models/dreamBuilder/UniSEM. The Colab notebook in this repository
 uses immutable code and model revisions and verifies each file's SHA256.
+The published model revision is `c074500d3426dfe4d43d47fb237775c2e2c788d5`.
 Model files remain outside Git and the Pages artifact. Target checkpoints and
 RFs remain local candidates, as recorded per asset in `models/manifest.json`.
 

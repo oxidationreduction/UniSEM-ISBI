@@ -1,9 +1,10 @@
 # UniSEM models
 
-The **first-stage EMNeuron model and matching full55 RF** are prepared for release through
+The **first-stage EMNeuron model and matching full55 RF** are publicly available through
 [ModelScope · dreamBuilder/UniSEM](https://modelscope.cn/models/dreamBuilder/UniSEM) under Apache-2.0.
 The [Colab notebook](https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb)
 downloads both files at a fixed revision and verifies their SHA256 values.
+The public model revision is `c074500d3426dfe4d43d47fb237775c2e2c788d5`.
 WaferEM LightFT and FullFT assets remain **local candidates**. Their dataset
 and derivative-weight conditions are recorded separately; they are not included
 in the public model download.

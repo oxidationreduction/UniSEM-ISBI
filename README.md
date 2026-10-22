@@ -35,7 +35,7 @@ It prepares the model environment, downloads the first-stage model and its
 matching RF, and lets you upload, inspect, segment, and download your data.
 
 This repository provides the research reference implementation and static
-project page. First-stage weights are prepared for separate distribution through
+project page. First-stage weights and their matching full55 RF are publicly available through
 [ModelScope](https://modelscope.cn/models/dreamBuilder/UniSEM); target LightFT and
 FullFT assets remain local release candidates. The manuscript and supplement are Chinese drafts;
 code, documentation, and the website are English. Final author and citation
