@@ -17,7 +17,7 @@
     <nav aria-label="Main navigation">
       <a href="#method">Method</a><a href="#evidence">Evidence</a><a href="#explore">Explore</a><a href="#reuse">Use the code</a>
     </nav>
-    <a class="header-paper" href="assets/paper.pdf">Paper <span aria-hidden="true">↗</span></a>
+    <a class="header-paper" href="assets/paper.pdf?v=2f1f1c6c219d">Paper <span aria-hidden="true">↗</span></a>
   </header>
 
   <main id="main">
@@ -26,7 +26,7 @@
         <p class="eyebrow"><span class="small-rule"></span> ELECTRON MICROSCOPY · INSTANCE SEGMENTATION</p>
         <h1 id="hero-title">An EM generalist.<br> A target specialist.<br> <em>One reusable model.</em></h1>
         <p class="hero-description">UniSEM learns prompt-free neuron segmentation across EM data, then specializes through limited labels and a small parameter update.</p>
-        <div class="hero-actions"><a class="button primary" href="#explore">Explore real predictions <span aria-hidden="true">↗</span></a><a class="button text-button" href="assets/paper.pdf">Read the draft <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-actions"><a class="button primary" href="#explore">Explore real predictions <span aria-hidden="true">↗</span></a><a class="button text-button" href="assets/paper.pdf?v=2f1f1c6c219d">Read the draft <span aria-hidden="true">↗</span></a></div>
         <div class="hero-facts">
           <div><strong>~¼</strong><span>target labels<small>Two-stage vs. target-only training</small></span></div>
           <div><strong>4.1<span>%</span></strong><span>updated parameters<small>LightFT vs. full fine-tuning</small></span></div>
@@ -44,7 +44,7 @@
       </div>
     </section>
 
-    <div class="project-bar section-shell"><span>Two-stage learning</span><i aria-hidden="true"></i><span>Prompt-free dense prediction</span><i aria-hidden="true"></i><span>Efficient specialization</span><a href="assets/supplement.pdf">Supplementary material <span aria-hidden="true">↗</span></a></div>
+    <div class="project-bar section-shell"><span>Two-stage learning</span><i aria-hidden="true"></i><span>Prompt-free dense prediction</span><i aria-hidden="true"></i><span>Efficient specialization</span><a href="assets/supplement.pdf?v=b7bf4176d18c">Supplementary material <span aria-hidden="true">↗</span></a></div>
 
     <section id="abstract" class="section-shell abstract-section section-space">
       <div class="section-margin"><p class="eyebrow">THE IDEA</p><h2>Learn broadly.<br> Adapt precisely.</h2></div>
@@ -140,7 +140,7 @@
     <section id="reuse" class="section-shell section-space reuse-section">
       <div class="section-heading"><div><p class="eyebrow">REUSE THE WORK</p><h2>Research code.<br> A clear starting point.</h2></div><a class="button primary" href="https://github.com/oxidationreduction/UniSEM-ISBI">View GitHub <span aria-hidden="true">↗</span></a></div>
       <div class="reuse-grid"><div class="quickstart"><p class="code-label">MODEL ENVIRONMENT · LINUX / PYTHON 3.10</p><pre><code>python -m pip install -e .
-unisem --help</code></pre><p>The release separates model construction, dense prediction, instance generation, and evaluation. Start with the installation and checkpoint instructions; the viewer itself needs only a local static server.</p><a href="downloads/unisem-source.zip">Code and reproducibility documentation ↗</a></div><div id="models" class="models-copy"><h3>Models &amp; reproducibility</h3><p>Use a source model as a reusable starting point, then choose LightFT or full fine-tuning for target specialization. Checkpoint identity, output semantics, and training protocol belong with each model.</p><a class="resource-row" href="models.html"><span>Model cards &amp; checkpoint availability</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/paper.pdf"><span>Paper · Chinese draft</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/supplement.pdf"><span>Supplement · protocols and full results</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/cases.json"><span>Viewer metadata &amp; selection rules</span><span aria-hidden="true">↗</span></a></div></div>
+unisem --help</code></pre><p>The release separates model construction, dense prediction, instance generation, and evaluation. Start with the installation and checkpoint instructions; the viewer itself needs only a local static server.</p><a href="downloads/unisem-source.zip">Code and reproducibility documentation ↗</a></div><div id="models" class="models-copy"><h3>Models &amp; reproducibility</h3><p>Use a source model as a reusable starting point, then choose LightFT or full fine-tuning for target specialization. Checkpoint identity, output semantics, and training protocol belong with each model.</p><a class="resource-row" href="models.html"><span>Model cards &amp; checkpoint availability</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/paper.pdf?v=2f1f1c6c219d"><span>Paper · Chinese draft</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/supplement.pdf?v=b7bf4176d18c"><span>Supplement · protocols and full results</span><span aria-hidden="true">↗</span></a><a class="resource-row" href="assets/cases.json"><span>Viewer metadata &amp; selection rules</span><span aria-hidden="true">↗</span></a></div></div>
       <div class="release-note"><span class="pill">RESEARCH PREVIEW</span><p>This page accompanies a manuscript draft. It does not imply acceptance at ISBI. Code, model weights, and sample images have separate availability and licensing conditions; the software license does not grant permission to redistribute WaferEM data. <a href="licenses.html">Sources and licenses ↗</a></p></div>
     </section>
   </main>
