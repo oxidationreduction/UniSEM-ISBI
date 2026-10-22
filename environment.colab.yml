@@ -1,0 +1,10 @@
+name: unisem-colab
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy=1.26.4
+  - vigra=1.12.2
+  - nifty=1.2.4
+  - affogato=0.4.2
