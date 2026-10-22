@@ -72,6 +72,12 @@ result panel instead of showing a synthetic or previous success. If an existing
 runtime contains a different code revision, start a fresh runtime for the
 notebook version you opened.
 
+If Colab reports that it cannot load the JavaScript needed for output, refresh
+your sign-in and consult the [official Colab FAQ](https://research.google.com/colaboratory/faq.html).
+Rich outputs use a separate Google output origin; the FAQ describes a hostname
+cookie exception instead of enabling third-party cookies globally. This affects
+the browser's upload/viewer controls, separately from model computation.
+
 ## Release verification
 
 Input validation, result export and all notebook code cells can be checked

@@ -2,6 +2,39 @@
 
 This page records implementation checks, not new scientific experiments.
 
+## Public model release — 2026-10-23
+
+- The first-stage model and matching full55 RF are public in
+  [dreamBuilder/UniSEM](https://modelscope.cn/models/dreamBuilder/UniSEM), at
+  revision `c074500d3426dfe4d43d47fb237775c2e2c788d5`.
+- Anonymous full downloads reproduced the recorded byte sizes and SHA256 values
+  for both files: 1,279,754,552 bytes and 76,295,596 bytes. Large-file upload and
+  this verification ran directly on the publishing server's network.
+- The notebook pins code revision `84a3f3d5240f3ecf6221ebebfa103616f052ff72`.
+  Interrupted downloads retain partial data, retry at most three times, verify
+  HTTP range responses, and promote files only after the expected SHA256 matches.
+- Thirty-nine focused tests passed for inputs, export, retry/resume behavior,
+  model manifests, and RF feature ordering. Source hygiene, local links, notebook
+  revision pins, and cleared notebook outputs passed the release check.
+- A clean Colab T4 session installed the isolated Python 3.10 environment. After
+  updating that session to the released code, both model files downloaded and
+  passed checksum verification. A separate final-notebook session could not be
+  allocated because of the account's concurrent-session limit; no unrelated
+  sessions were terminated.
+- Real CUDA inference on the bundled 256 x 256 image completed with CLI exit 0.
+  The result contained 71 nonzero instances with uint32 labels; all 16 HDF5
+  arrays were finite. Export produced the labels TIFF, prediction HDF5, preview
+  PNG, run metadata, and ZIP. These are integration checks on one image.
+- The live check exposed an inherited Colab plotting-backend setting that was
+  invalid in the isolated environment. Subprocesses now explicitly use `Agg`,
+  installation checks import the actual dense-model dependency, and inference
+  displays the underlying process log before checking its exit status.
+- Browser widget interaction and button-driven downloads remain unverified:
+  Colab reported an output-JavaScript/third-party-cookie error after refresh.
+  Inference and export above were verified through notebook code execution;
+  they are not evidence that the browser controls passed. No browser privacy
+  settings were changed without the user's confirmation.
+
 ## Product page and Colab preparation — 2026-10-22
 
 - The redesigned page was inspected in a real browser at desktop, 768-pixel,
@@ -29,9 +62,8 @@ This page records implementation checks, not new scientific experiments.
   cold-install attempt stopped because the test host could not resolve the
   upstream package hosts. The successful inference inherited the reference
   ML dependencies; it does not establish a clean Colab installation.
-- Hugging Face upload and the actual Colab cold-start test remain pending
-  browser access. The notebook's model revision must be filled from the
-  verified upload before this prepared update is published.
+- At this preparatory checkpoint, public weight hosting and Colab validation
+  were pending. The public-release record above supersedes the hosting status.
 
 ## Model package
 
