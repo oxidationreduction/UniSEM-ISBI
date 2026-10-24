@@ -118,6 +118,8 @@ def main() -> int:
     file_count = 0
     for path in source_files():
         file_count += 1
+        if path.suffix.lower() == ".pdf":
+            errors.append(f"PDF publication is prohibited: {path.relative_to(ROOT)}")
         if path.stat().st_size > 50 * 1024 * 1024:
             errors.append(f"Source file exceeds 50 MiB: {path.relative_to(ROOT)}")
         if path.suffix in TEXT_SUFFIXES:

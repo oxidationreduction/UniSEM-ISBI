@@ -225,17 +225,15 @@ def main() -> None:
     write_json(assets / "cases.json", cases)
     write_json(args.site_root.resolve() / "data" / "results.json", evidence_data(paper_root))
     comparison_film(assets, case_copy)
-    paper = paper_root / "UniSEM-ISBI.pdf"
-    supplement = paper_root / "output" / "UniSEM_ISBI_zh_supplement.pdf"
-    for source, name in [(paper, "paper.pdf"), (supplement, "supplement.pdf"),
-                         (paper_root / "figures" / "1-overview.pdf", "author-overview.pdf"),
-                         (paper_root / "figures" / "14-results-show.pdf", "qualitative-comparison.pdf")]:
-        shutil.copyfile(source, assets / name)
-        asset_sources.append(dict(file=f"assets/{name}", sha256=sha256(source),
+    # Render author figures directly from private local sources; never publish PDFs.
+    for source, name, width in [
+        (paper_root / "figures" / "1-overview.pdf", "author-overview.png", 2200),
+        (paper_root / "figures" / "14-results-show.pdf", "qualitative-comparison.png", 2600),
+    ]:
+        render_pdf(source, assets / name, width)
+        asset_sources.append(dict(file=f"assets/{name}", sha256=sha256(assets / name),
                                   source=str(source.relative_to(paper_root)).replace("\\", "/"),
-                                  role="author_manuscript_asset", release_status="local_research_preview"))
-    render_pdf(assets / "author-overview.pdf", assets / "author-overview.png")
-    render_pdf(assets / "qualitative-comparison.pdf", assets / "qualitative-comparison.png", 2600)
+                                  role="rendered_author_figure", release_status="research_display"))
     write_json(assets / "asset-provenance.json", {
         "schema": "unisem-site-assets-v1",
         "software_license_is_not_data_permission": True,

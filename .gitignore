@@ -12,3 +12,6 @@ site/downloads/*.zip
 *.log
 .DS_Store
 .env
+
+# Manuscript documents stay outside the public release.
+*.pdf

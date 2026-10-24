@@ -88,34 +88,6 @@
       "release_status": "local_research_preview"
     },
     {
-      "file": "assets/paper.pdf",
-      "sha256": "2f1f1c6c219d79e9242e3bee6b8f72e154f8517ea5ff417a4c168cbb1079ac3e",
-      "source": "UniSEM-ISBI.pdf",
-      "role": "author_manuscript_asset",
-      "release_status": "local_research_preview"
-    },
-    {
-      "file": "assets/supplement.pdf",
-      "sha256": "b7bf4176d18c60624dcb1934ddbde13be7730d992888059c165e9e7384fd3093",
-      "source": "output/UniSEM_ISBI_zh_supplement.pdf",
-      "role": "author_manuscript_asset",
-      "release_status": "local_research_preview"
-    },
-    {
-      "file": "assets/author-overview.pdf",
-      "sha256": "3954743bc6d20f4e7b9a8cedbb720c1dffbeb3a0d2411a83f87287be6e962e2c",
-      "source": "figures/1-overview.pdf",
-      "role": "author_manuscript_asset",
-      "release_status": "local_research_preview"
-    },
-    {
-      "file": "assets/qualitative-comparison.pdf",
-      "sha256": "5b8ef1b66b3046853b0cb2b3d164513214fc0820f19ad7e3255f0d774cc71d78",
-      "source": "figures/14-results-show.pdf",
-      "role": "author_manuscript_asset",
-      "release_status": "local_research_preview"
-    },
-    {
       "file": "assets/method.svg",
       "sha256": "83ff54bbfd0e99340206f54fdd040c7fd911f194ec46b3b31ee5477980d38c8b",
       "source": "Original editable UniSEM website vector",

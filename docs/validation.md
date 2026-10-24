@@ -2,6 +2,15 @@
 
 This page records implementation checks, not new scientific experiments.
 
+## Manuscript withdrawal — 2026-10-24
+
+Manuscript and supplementary PDFs are not published through this repository,
+project page, or generated source archive. Figure previews remain as PNG images.
+The asset builder renders figures directly from private local sources without
+copying PDFs, packaging excludes PDFs, and the release check rejects any PDF
+left in the public tree. Earlier download checks below are historical records,
+not statements of current manuscript availability.
+
 ## Public model release — 2026-10-23
 
 - The first-stage model and matching full55 RF are public in
