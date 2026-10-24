@@ -1,0 +1,80 @@
+{
+  "id": "emneuron_kstr_z057",
+  "title": "Selected high-resolution showcase",
+  "dataset": "EMNeuron",
+  "volume": "Kstr",
+  "z": 57,
+  "shape": [
+    1024,
+    1024
+  ],
+  "full_slice_shape": [
+    1024,
+    1024
+  ],
+  "crop_shape": [
+    1024,
+    1024
+  ],
+  "crop_yxyx": [
+    0,
+    0,
+    1024,
+    1024
+  ],
+  "xy_nm": null,
+  "seed": null,
+  "methods": [
+    "raw",
+    "gt",
+    "microsam",
+    "unisem"
+  ],
+  "defaults": {
+    "left": "microsam",
+    "right": "unisem"
+  },
+  "selection_note": "Selected showcase, not a random sample: among the five lowest UniSEM whole-slice CREMI scores in the native 1024-pixel EMNeuron volumes, this slice has the largest improvement over the matched µSAM result. No training or new neural inference was performed.",
+  "interpretation": "On this selected full slice, the frozen first-stage UniSEM model has lower overall VOI and ARAND than µSAM. Colors correspond to ground-truth overlap; actual prediction boundaries and residual errors are retained.",
+  "images": {
+    "raw": "highres/emneuron_kstr_z057_raw.png",
+    "gt": "highres/emneuron_kstr_z057_gt.png",
+    "unisem": "highres/emneuron_kstr_z057_unisem.png",
+    "microsam": "highres/emneuron_kstr_z057_microsam.png"
+  },
+  "whole_slice_metrics": {
+    "unisem": {
+      "VOI_s": 0.9115925218869787,
+      "VOI_m": 0.5466912106732051,
+      "VOI_sum": 1.4582837325601838,
+      "ARAND": 0.08601761433940114,
+      "CREMI": 0.35417239828194447
+    },
+    "microsam": {
+      "VOI_s": 1.3922152866261106,
+      "VOI_m": 0.5885886261827133,
+      "VOI_sum": 1.980803912808824,
+      "ARAND": 0.43701428094142936,
+      "CREMI": 0.9303975481707365
+    }
+  },
+  "provenance": {
+    "evaluation": "2D, 8-connected component-pseudo for prediction and GT, minimum area 1; official ELF metrics",
+    "image_policy": "Native pixels; no upsampling, smoothing or generated detail. One color per connected prediction instance, matched to its largest GT overlap.",
+    "pixel_spacing": "Physical spacing is not recorded; the viewer uses a pixel ruler.",
+    "display_asset_sha256": {
+      "raw": "e727641f0db11fd9c80df7f0dd8ce48a8f97d12a21c098c5caff622d774abc1d",
+      "gt": "d749a715b271a16e40e88656f4113a30342254dbd8488c2c35583ed7f8bbe815",
+      "unisem": "118d6e989a9d736d6c34a1c4feddc662c525c0c83562149094045b80e6a3a454",
+      "microsam": "2da91e384b983425206043f072064d453eeeb38ad77c8f7b45f2c2739deeb1c8"
+    },
+    "metric_source_sha256": "0d7049ae03c2b84eb035f1a8bb9b7f6c2e31d35a7bb796c0a6f26444113431a0",
+    "baseline_report_sha256": "b11e6aec95f414c43fb1d88c8d2dd15dd62484c0ffbffd63c12c447f88629b67",
+    "raw_pixel_sha256": "0746d2b969a87780d51fc4cb4379c983c7d5751d953d9413b16a8ee37f2f84c0",
+    "prediction_pixel_sha256": {
+      "unisem": "e8e4c34e2d0eec775c2b23e5d209e2758a992b3ff71327f0984e22e4dffbb6d2",
+      "microsam": "19e0122c30aa0322b5a5c884c1265f399b2a8331708fbfae7e5c8a48c9e0cc3f"
+    },
+    "dataset_source": "https://huggingface.co/datasets/yanchaoz/EMNeuron"
+  }
+}

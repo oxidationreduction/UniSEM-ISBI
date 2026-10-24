@@ -1,8 +1,9 @@
 """Build the local UniSEM project-page assets from the frozen paper package.
 
 No training, inference, metric recomputation, or source-data download is performed.
-The twelve PNG crops are copied byte-for-byte; GIFs and PDF previews are display
-derivatives. Requires Pillow and Poppler's pdftoppm only when rebuilding assets.
+The twelve WaferEM crops are copied byte-for-byte. A separately validated native
+EMNeuron showcase is retained when present. Requires Pillow and Poppler's
+pdftoppm only when rebuilding figure previews; PDFs are never published.
 """
 
 from __future__ import annotations
@@ -37,6 +38,25 @@ def sha256(path: Path) -> str:
 def write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def attach_highres_case(cases: dict, assets: Path) -> dict | None:
+    """Preserve the separately validated native-resolution showcase on rebuild."""
+    manifest = assets / "highres" / "case.json"
+    if not manifest.is_file():
+        return None
+    case = json.loads(manifest.read_text(encoding="utf-8"))
+    for relative in case["images"].values():
+        path = (assets / relative).resolve()
+        if not path.is_relative_to(assets.resolve()) or path.suffix != ".png":
+            raise ValueError("Showcase assets must be PNG files inside the asset directory")
+        with Image.open(path) as image:
+            if list(reversed(image.size)) != case["crop_shape"]:
+                raise ValueError(f"Showcase image dimensions changed: {relative}")
+    cases["methods"].update({"microsam": "µSAM", "unisem": "UniSEM · first-stage model"})
+    cases["cases"] = [case, *[item for item in cases["cases"] if item["id"] != case["id"]]]
+    cases["default_case_id"] = case["id"]
+    return case
 
 
 def numeric_rows(path: Path) -> list[list[float]]:
@@ -222,6 +242,12 @@ def main() -> None:
         },
         "cases": case_copy,
     }
+    highres_case = attach_highres_case(cases, assets)
+    if highres_case:
+        for relative in highres_case["images"].values():
+            asset_sources.append(dict(file=f"assets/{relative}", sha256=sha256(assets / relative),
+                                      source="Frozen EMNeuron Kstr slice 57; see highres/case.json",
+                                      role="native_resolution_showcase", release_status="research_display"))
     write_json(assets / "cases.json", cases)
     write_json(args.site_root.resolve() / "data" / "results.json", evidence_data(paper_root))
     comparison_film(assets, case_copy)
@@ -242,7 +268,7 @@ def main() -> None:
         "generated": ["comparison.gif", "comparison-poster.png", "author-overview.png", "qualitative-comparison.png"],
     })
     print(json.dumps({"site": str(args.site_root.resolve()), "copied_crops": 12,
-                      "cases": len(case_copy), "gif_duration_seconds": 10,
+                      "cases": len(cases["cases"]), "gif_duration_seconds": 10,
                       "asset_files": len(list(assets.rglob("*")))}, indent=2))
 
 

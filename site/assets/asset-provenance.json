@@ -100,6 +100,34 @@
       "source": "Original editable UniSEM website vector",
       "role": "site_identity",
       "release_status": "public_project_page"
+    },
+    {
+      "file": "assets/highres/emneuron_kstr_z057_raw.png",
+      "sha256": "e727641f0db11fd9c80df7f0dd8ce48a8f97d12a21c098c5caff622d774abc1d",
+      "source": "Frozen EMNeuron Kstr slice 57; metadata in highres/case.json",
+      "role": "native_resolution_showcase",
+      "release_status": "research_display"
+    },
+    {
+      "file": "assets/highres/emneuron_kstr_z057_gt.png",
+      "sha256": "d749a715b271a16e40e88656f4113a30342254dbd8488c2c35583ed7f8bbe815",
+      "source": "Frozen EMNeuron Kstr slice 57; metadata in highres/case.json",
+      "role": "native_resolution_showcase",
+      "release_status": "research_display"
+    },
+    {
+      "file": "assets/highres/emneuron_kstr_z057_unisem.png",
+      "sha256": "118d6e989a9d736d6c34a1c4feddc662c525c0c83562149094045b80e6a3a454",
+      "source": "Frozen EMNeuron Kstr slice 57; metadata in highres/case.json",
+      "role": "native_resolution_showcase",
+      "release_status": "research_display"
+    },
+    {
+      "file": "assets/highres/emneuron_kstr_z057_microsam.png",
+      "sha256": "2da91e384b983425206043f072064d453eeeb38ad77c8f7b45f2c2739deeb1c8",
+      "source": "Frozen EMNeuron Kstr slice 57; metadata in highres/case.json",
+      "role": "native_resolution_showcase",
+      "release_status": "research_display"
     }
   ],
   "generated": [

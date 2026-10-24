@@ -3,7 +3,7 @@
 
 const $ = (selector) => document.querySelector(selector);
 const assets = "assets/";
-const state = { data: null, caseId: "typical_improvement", left: "sam625", right: "source160", split: 50, opacity: 100, zoom: 1, x: 0, y: 0, drag: null, filmPlaying: false };
+const state = { data: null, caseId: null, left: null, right: null, split: 50, opacity: 100, zoom: 1, x: 0, y: 0, drag: null, filmPlaying: false };
 
 function element(tag, value, className) {
   const node = document.createElement(tag);
@@ -67,22 +67,68 @@ function renderEvidence(data) {
 
 function currentCase() { return state.data.cases.find((item) => item.id === state.caseId); }
 
+function caseShape(item) {
+  return item.crop_shape || item.shape || [item.crop_yxyx[2] - item.crop_yxyx[0], item.crop_yxyx[3] - item.crop_yxyx[1]];
+}
+
+function availableMethods(item) {
+  return (item.methods || Object.keys(item.images)).filter((key) => item.images[key] && state.data.methods[key]);
+}
+
+function caseDefaults(item) {
+  const keys = availableMethods(item);
+  return item.defaults || {left: keys.includes("sam625") ? "sam625" : keys[0], right: keys.includes("source160") ? "source160" : keys[keys.length - 1]};
+}
+
 function renderCase() {
   const item = currentCase();
   const methods = state.data.methods;
+  const keys = availableMethods(item);
+  const defaults = caseDefaults(item);
+  const [height, width] = caseShape(item);
   for (const side of ["left", "right"]) {
+    if (!keys.includes(state[side])) state[side] = defaults[side];
     const key = state[side];
-    $("#" + side + "-image").src = assets + item.images[key];
-    $("#" + side + "-image").alt = methods[key] + ", " + item.title + ", slice " + item.z;
+    const select = $("#" + side + "-select");
+    select.replaceChildren(...keys.map((method) => {
+      const option = element("option", methods[method]);
+      option.value = method;
+      return option;
+    }));
+    const image = $("#" + side + "-image");
+    image.src = assets + item.images[key];
+    image.alt = methods[key] + ", " + item.title + ", slice " + item.z;
+    image.width = width; image.height = height;
     $("#" + side + "-label").textContent = methods[key];
-    $("#" + side + "-select").value = key;
+    select.value = key;
+    const original = $("#" + side + "-original");
+    const download = $("#" + side + "-download");
+    original.href = download.href = image.src;
+    original.textContent = side[0].toUpperCase() + side.slice(1) + ": " + methods[key] + " · " + width + " × " + height + " PNG ↗";
+    original.setAttribute("aria-label", "Open full-resolution " + side + " image: " + methods[key]);
+    download.download = item.images[key].split("/").pop();
+    download.setAttribute("aria-label", "Download full-resolution " + side + " image: " + methods[key]);
   }
-  document.querySelectorAll(".raw-base").forEach((image) => { image.src = assets + item.images.raw; });
+  document.querySelectorAll(".raw-base").forEach((image) => {
+    image.src = assets + item.images.raw;
+    image.width = width; image.height = height;
+  });
+  $("#compare-viewport").style.aspectRatio = width + " / " + height;
   $("#case-kicker").textContent = "CASE " + (state.data.cases.indexOf(item) + 1).toString().padStart(2, "0") + " / SLICE " + item.z;
   $("#case-title").textContent = item.title;
   $("#case-description").textContent = item.interpretation;
-  $("#crop-coordinates").textContent = "[" + item.crop_yxyx.join(", ") + ") · 256 × 256 px";
-  $("#selection-note").textContent = state.data.selection.slices + " " + state.data.selection.crops;
+  $("#case-dataset").textContent = item.dataset || state.data.dataset;
+  $("#case-volume").textContent = item.volume || state.data.volume;
+  const seed = item.seed !== undefined ? item.seed : state.data.seed;
+  $("#case-seed-row").hidden = seed === null || seed === undefined;
+  $("#case-seed").textContent = seed ?? "";
+  $("#crop-coordinates").textContent = "[" + item.crop_yxyx.join(", ") + ") · " + width + " × " + height + " px";
+  $("#selection-note").textContent = item.selection_note || state.data.selection.slices + " " + state.data.selection.crops;
+  const fullShape = item.full_slice_shape || state.data.full_slice_shape;
+  const isFullSlice = fullShape[0] === height && fullShape[1] === width && item.crop_yxyx[0] === 0 && item.crop_yxyx[1] === 0;
+  $("#case-metric-note").textContent = isFullSlice
+    ? "The values below describe this entire " + width + " × " + height + " slice."
+    : "The values below describe the full " + fullShape[1] + " × " + fullShape[0] + " slice, not this " + width + " × " + height + " crop.";
   renderWholeSliceMetrics();
   updateView();
 }
@@ -95,16 +141,17 @@ function renderWholeSliceMetrics() {
     const metrics = item.whole_slice_metrics[key];
     if (metrics) rows.push({name: (side === "left" ? "L · " : "R · ") + state.data.methods[key], voi: metrics.VOI_sum, arand: metrics.ARAND});
   }
-  if (rows.length) createTable($("#case-metrics"), ["Selected prediction", "VOIsum ↓", "ARAND ↓"], rows, ["name", "voi", "arand"], {caption: "Existing metrics for the entire slice, not the displayed region"});
+  if (rows.length) createTable($("#case-metrics"), ["Selected prediction", "VOIsum ↓", "ARAND ↓"], rows, ["name", "voi", "arand"], {caption: "Recorded whole-slice metrics"});
   else $("#case-metrics").replaceChildren(element("p", "Choose a prediction to see its existing whole-slice metrics.", "fine-print"));
 }
 
 function updateView() {
   const viewport = $("#compare-viewport");
   viewport.classList.toggle("zoomed", state.zoom > 1);
-  const maxPan = (state.zoom - 1) * viewport.clientWidth / 2;
-  state.x = Math.max(-maxPan, Math.min(maxPan, state.x));
-  state.y = Math.max(-maxPan, Math.min(maxPan, state.y));
+  const maxPanX = (state.zoom - 1) * viewport.clientWidth / 2;
+  const maxPanY = (state.zoom - 1) * viewport.clientHeight / 2;
+  state.x = Math.max(-maxPanX, Math.min(maxPanX, state.x));
+  state.y = Math.max(-maxPanY, Math.min(maxPanY, state.y));
   viewport.style.setProperty("--split", state.split + "%");
   viewport.style.setProperty("--zoom", state.zoom);
   viewport.style.setProperty("--pan-x", state.x + "px");
@@ -113,8 +160,12 @@ function updateView() {
   $("#opacity-value").textContent = state.opacity + "%";
   $("#zoom-value").textContent = state.zoom.toFixed(2).replace(/\.?0+$/, "") + "×";
   const bar = $("#scale-bar span");
-  // 500 nm / 8 nm per pixel, relative to a 256-pixel crop at the current zoom.
-  const barWidth = (500 / currentCase().xy_nm / 256) * viewport.clientWidth * state.zoom;
+  const item = currentCase();
+  const width = caseShape(item)[1];
+  const hasPhysicalScale = Number.isFinite(item.xy_nm) && item.xy_nm > 0;
+  const lengthPixels = hasPhysicalScale ? 500 / item.xy_nm : 100;
+  const barWidth = lengthPixels / width * viewport.clientWidth * state.zoom;
+  $("#scale-bar small").textContent = hasPhysicalScale ? "500 nm" : "100 px";
   bar.style.width = barWidth + "px";
   $("#scale-bar").hidden = barWidth > viewport.clientWidth * 0.65;
 }
@@ -127,12 +178,27 @@ function resetView() {
 
 function initViewer(data) {
   state.data = data;
+  state.caseId = data.default_case_id || data.cases[0].id;
+  const caseSelect = $("#case-select");
+  caseSelect.replaceChildren(...data.cases.map((item) => {
+    const [height, width] = caseShape(item);
+    const dataset = (item.dataset || data.dataset).split(",")[0];
+    const label = dataset + (item.volume ? " " + item.volume : "") + " · z" + item.z + " · " + width + " px";
+    const option = element("option", label);
+    option.value = item.id;
+    return option;
+  }));
+  caseSelect.value = state.caseId;
+  Object.assign(state, caseDefaults(currentCase()));
   for (const side of ["left", "right"]) {
     const select = $("#" + side + "-select");
-    Object.entries(data.methods).forEach(([key, title]) => { const option = element("option", title); option.value = key; select.append(option); });
     select.addEventListener("change", () => { state[side] = select.value; renderCase(); });
   }
-  $("#case-select").addEventListener("change", (event) => { state.caseId = event.target.value; resetView(); renderCase(); });
+  $("#case-select").addEventListener("change", (event) => {
+    state.caseId = event.target.value;
+    Object.assign(state, caseDefaults(currentCase()));
+    resetView(); renderCase();
+  });
   $("#wipe-range").addEventListener("input", (event) => { state.split = Number(event.target.value); updateView(); });
   $("#opacity-range").addEventListener("input", (event) => { state.opacity = Number(event.target.value); updateView(); });
   $("#zoom-range").addEventListener("input", (event) => { state.zoom = Number(event.target.value); updateView(); });
@@ -226,7 +292,7 @@ async function start() {
     const [results, cases] = await Promise.all([resultsResponse.json(), casesResponse.json()]);
     renderEvidence(results); initViewer(cases);
   } catch (error) {
-    const notice = element("p", "The frozen data could not be loaded. Serve this directory with a local HTTP server; opening index.html directly may block the viewer. The paper and supplementary links remain available.", "notice");
+    const notice = element("p", "The frozen data could not be loaded. Serve this directory with a local HTTP server; opening index.html directly may block the viewer. The static examples and full-resolution PNG links remain available on this page.", "notice");
     $("#explore .section-shell").prepend(notice);
     console.error(error);
   }

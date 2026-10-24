@@ -2,6 +2,28 @@
 
 This page records implementation checks, not new scientific experiments.
 
+## Native-resolution showcase — 2026-10-24
+
+- The default example is EMNeuron Kstr, slice 57, at its native 1024 x 1024
+  pixels. Raw EM, GT, the frozen first-stage UniSEM pipeline, and µSAM are
+  spatially matched. It is a deliberately selected showcase, not a random case.
+- Selection first retained the five lowest UniSEM slice CREMI scores among the
+  native 1024-pixel EMNeuron volumes, then selected the largest improvement over
+  the matching µSAM prediction. All ten candidate predictions were rechecked
+  with official ELF metrics after 2D eight-connected component relabeling; every
+  result matched its frozen record within 1e-6. No model inference or training ran.
+- All four PNG files preserve native dimensions. Prediction instances retain
+  their actual boundaries; one prediction component has one color, selected by
+  maximum GT overlap. Colors can repeat when a GT instance is split. Raw display
+  uses the same 1st/99th percentile normalization for every comparison.
+- The remote job was restricted to CPU IDs 0–3, four single-thread workers, and
+  one BLAS/OpenMP thread per worker. Ten metric checks and four PNG renders took
+  8.21 seconds, with 24.39 worker CPU-seconds in total.
+- The viewer uses case-specific methods, dimensions and metadata. The new case
+  uses a pixel ruler because no physical spacing is recorded; the original two
+  WaferEM crops retain their 8 nm context and separate whole-slice metrics.
+- Manuscript PDFs remain excluded from the repository, website and source ZIP.
+
 ## Manuscript withdrawal — 2026-10-24
 
 Manuscript and supplementary PDFs are not published through this repository,

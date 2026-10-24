@@ -307,3 +307,11 @@ pre { background: var(--surface); padding: 24px; overflow-x: auto; font-size: 16
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.full-resolution-links { display: grid; gap: 12px; margin-top: 20px; font-size: 16px; line-height: 1.4; }
+.full-resolution-links > div { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; }
+.full-resolution-links a { min-width: 0; overflow-wrap: anywhere; }
+.full-resolution-links a:last-child { flex-shrink: 0; }
+@media(max-width: 760px) {
+  .full-resolution-links > div { flex-wrap: wrap; gap: 6px 18px; }
+}

@@ -7,8 +7,8 @@
   <meta name="description" content="Prompt-free EM neuron segmentation with a reusable generalist model and efficient target specialization. Explore real predictions or segment your data in Colab.">
   <title>UniSEM | EM neuron segmentation</title>
   <link rel="icon" href="assets/favicon.svg?v=e277f0d589ac" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=ae7b8bc2bbb1">
-  <script src="app.js?v=02338399c50e" defer></script>
+  <link rel="stylesheet" href="styles.css?v=16bc0d70e972">
+  <script src="app.js?v=920286d796e4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -25,11 +25,11 @@
       <div class="hero-actions"><a class="button primary" href="#explore">Explore examples</a><a class="button secondary" href="https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb">Run on your data ↗</a></div>
       <figure class="hero-visual">
         <div class="em-triptych">
-          <figure><img src="assets/crops/typical_improvement_z080_raw.png" alt="Raw electron microscopy crop showing tightly packed neuronal processes" width="256" height="256"><figcaption>Raw EM</figcaption></figure>
-          <figure><img src="assets/crops/typical_improvement_z080_source160.png" alt="UniSEM two-stage segmentation of the same neuronal region" width="256" height="256"><figcaption>UniSEM</figcaption></figure>
-          <figure><img src="assets/crops/typical_improvement_z080_gt.png" alt="Ground-truth instance segmentation of the same region" width="256" height="256"><figcaption>Ground truth</figcaption></figure>
+          <figure><img src="assets/highres/emneuron_kstr_z057_raw.png" alt="Raw electron microscopy slice showing tightly packed neuronal processes" width="1024" height="1024"><figcaption>Raw EM</figcaption></figure>
+          <figure><img src="assets/highres/emneuron_kstr_z057_unisem.png" alt="UniSEM first-stage segmentation of the same EMNeuron slice" width="1024" height="1024"><figcaption>UniSEM</figcaption></figure>
+          <figure><img src="assets/highres/emneuron_kstr_z057_gt.png" alt="Ground-truth instance segmentation of the same region" width="1024" height="1024"><figcaption>Ground truth</figcaption></figure>
         </div>
-        <figcaption class="hero-caption">Actual predictions · WaferEM · 160 target slices · matched instance colors</figcaption>
+        <figcaption class="hero-caption">Selected showcase · EMNeuron / Kstr / slice 57 · first-stage UniSEM · native 1024 × 1024 pixels</figcaption>
       </figure>
       <div class="hero-facts"><div><strong>~¼</strong><span>of the target labels<br><small>Two-stage vs. target-only training</small></span></div><div><strong>4.1%</strong><span>of the updated parameters<br><small>LightFT vs. full fine-tuning</small></span></div></div>
       <p class="hero-boundary">Measured in the reported WaferEM setting. The parameter ratio describes the update set.</p>
@@ -38,36 +38,37 @@
       <div class="section-shell">
         <div class="section-heading"><div><p class="eyebrow">Interactive examples</p><h2>See the difference.</h2></div><div><p class="section-intro">Compare actual precomputed predictions.<br>For your own images, <a href="https://colab.research.google.com/github/oxidationreduction/UniSEM-ISBI/blob/main/notebooks/UniSEM_Colab.ipynb">open the Colab demo ↗</a>.</p></div></div>
         <div class="explorer-controls">
-          <label class="case-control">Case<select id="case-select"><option value="typical_improvement">Typical improvement · z = 80</option><option value="minimum_improvement">Residual merge / regression · z = 27</option></select></label>
+          <label class="case-control">Case<select id="case-select"></select></label>
           <label>Left<select id="left-select"></select></label><label>Right<select id="right-select"></select></label>
         </div>
         <div class="explorer-layout">
           <div class="viewer-column">
             <div id="compare-viewport" class="compare-viewport" tabindex="0" aria-label="Synchronized prediction comparison. Drag the divider to compare; zoom and drag the image to inspect.">
-              <div class="comparison-layer right-layer"><div class="image-world"><img class="raw-base" alt="Raw EM background" draggable="false" width="256" height="256"><img id="right-image" class="prediction-image" alt="Right selected prediction" draggable="false" width="256" height="256"></div></div>
-              <div class="comparison-layer left-layer"><div class="image-world"><img class="raw-base" alt="Raw EM background" draggable="false" width="256" height="256"><img id="left-image" class="prediction-image" alt="Left selected prediction" draggable="false" width="256" height="256"></div></div>
-              <div class="viewer-label left-label" id="left-label">Target-only · 625 slices</div><div class="viewer-label right-label" id="right-label">Two-stage · 160 slices</div>
+              <div class="comparison-layer right-layer"><div class="image-world"><img class="raw-base" alt="Raw EM background" draggable="false" width="1024" height="1024"><img id="right-image" class="prediction-image" alt="Right selected prediction" draggable="false" width="1024" height="1024"></div></div>
+              <div class="comparison-layer left-layer"><div class="image-world"><img class="raw-base" alt="Raw EM background" draggable="false" width="1024" height="1024"><img id="left-image" class="prediction-image" alt="Left selected prediction" draggable="false" width="1024" height="1024"></div></div>
+              <div class="viewer-label left-label" id="left-label">µSAM</div><div class="viewer-label right-label" id="right-label">UniSEM · first-stage model</div>
               <button id="split-handle" class="split-handle" type="button" aria-label="Drag comparison divider"><span aria-hidden="true">‹ ›</span></button>
-              <div class="scale-bar" id="scale-bar"><span></span><small>500 nm</small></div>
+              <div class="scale-bar" id="scale-bar"><span></span><small>100 px</small></div>
             </div>
             <label class="wipe-control"><span>Left</span><input id="wipe-range" type="range" min="0" max="100" value="50" aria-label="Comparison split position"><span>Right</span></label>
             <div class="view-controls"><label>Overlay <input id="opacity-range" type="range" min="0" max="100" value="100" aria-label="Prediction opacity"><output id="opacity-value">100%</output></label><label>Zoom <input id="zoom-range" type="range" min="1" max="6" step="0.25" value="1" aria-label="Synchronized zoom"><output id="zoom-value">1×</output></label><button class="quiet-button" type="button" id="reset-view">Reset view</button></div>
             <p class="viewer-help">Drag the divider, or use the slider. Zoom and drag anywhere else to pan both views together. The scale bar applies to the current zoom.</p>
+            <div class="full-resolution-links" aria-label="Full-resolution selected images"><div><a id="left-original" href="assets/highres/emneuron_kstr_z057_microsam.png" target="_blank" rel="noopener">Open left PNG ↗</a><a id="left-download" href="assets/highres/emneuron_kstr_z057_microsam.png" download>Download ↓</a></div><div><a id="right-original" href="assets/highres/emneuron_kstr_z057_unisem.png" target="_blank" rel="noopener">Open right PNG ↗</a><a id="right-download" href="assets/highres/emneuron_kstr_z057_unisem.png" download>Download ↓</a></div></div>
           </div>
           <aside class="case-detail" aria-live="polite">
-            <p class="eyebrow" id="case-kicker">CASE 01</p><h3 id="case-title">Typical improvement</h3><p id="case-description"></p>
+            <p class="eyebrow" id="case-kicker">CASE 01</p><h3 id="case-title">Selected high-resolution showcase</h3><p id="case-description"></p>
             <div class="reference-buttons"><button type="button" data-left-reference="raw">Raw on left</button><button type="button" data-left-reference="gt">GT on left</button></div>
-            <dl class="case-metadata"><div><dt>Dataset</dt><dd>WaferEM · 8 nm XY</dd></div><div><dt>Seed</dt><dd>12345</dd></div><div><dt>Crop</dt><dd id="crop-coordinates"></dd></div></dl>
-            <h4>Whole-slice metrics</h4><p class="fine-print">The values below describe the full 625 × 625 slice, <strong>not this 256 × 256 crop</strong>.</p><div class="table-wrap compact-table" id="case-metrics"></div>
-            <details><summary>How these cases were selected</summary><p id="selection-note"></p><p>Every panel uses the same crop. Prediction colors follow maximum full-slice GT overlap, while actual prediction boundaries remain visible. A merged prediction stays a single filled region.</p></details>
+            <dl class="case-metadata"><div><dt>Dataset</dt><dd id="case-dataset">EMNeuron</dd></div><div><dt>Volume</dt><dd id="case-volume">Kstr</dd></div><div id="case-seed-row" hidden><dt>Seed</dt><dd id="case-seed"></dd></div><div><dt>Region</dt><dd id="crop-coordinates"></dd></div></dl>
+            <h4>Whole-slice metrics</h4><p class="fine-print" id="case-metric-note">The values below describe the entire selected slice.</p><div class="table-wrap compact-table" id="case-metrics"></div>
+            <details><summary>How these cases were selected</summary><p id="selection-note"></p><p>Every panel uses the same image region. Prediction colors follow maximum full-slice GT overlap, while actual prediction boundaries remain visible. A merged prediction stays a single filled region.</p></details>
           </aside>
         </div>
 <div class="film-section">
-      <div class="section-margin"><h3>Two cases in motion.</h3><p>A ten-second comparison of the same predictions.</p><button type="button" class="button primary" id="film-toggle" aria-pressed="false">Play comparison <span aria-hidden="true">▶</span></button><p class="fine-print">The animation plays only when requested.</p><a class="subtle-link" href="assets/comparison.gif" download>Download GIF ↧</a></div>
+      <div class="section-margin"><h3>Earlier WaferEM cases in motion.</h3><p>A ten-second comparison of the two WaferEM crop cases, separate from the EMNeuron showcase above.</p><button type="button" class="button primary" id="film-toggle" aria-pressed="false">Play comparison <span aria-hidden="true">▶</span></button><p class="fine-print">The animation plays only when requested.</p><a class="subtle-link" href="assets/comparison.gif" download>Download GIF ↧</a></div>
       <figure class="film-figure"><img id="comparison-film" src="assets/comparison-poster.png" data-animation="assets/comparison.gif" data-poster="assets/comparison-poster.png" width="960" height="420" loading="lazy" alt="Animated comparison of raw EM, target-only 625-slice and two-stage 160-slice predictions, and ground truth for one improvement and one regression case"><figcaption>Source initialization helps in the aggregate; local regressions are still visible.</figcaption></figure>
     </div>
 <details class="more-examples"><summary>More examples across EMNeuron and WaferEM</summary><div class="details-body"><p>Reference model configurations at matched locations.</p><a class="historical-figure" href="assets/qualitative-comparison.png"><img src="assets/qualitative-comparison.png" loading="lazy" width="2600" height="1000" alt="Reference-configuration comparison across EMNeuron and WaferEM, retaining original method labels, yellow arrows, and red circles"></a><p class="fine-print">The upper and lower rows show EMNeuron and WaferEM examples. The displayed LightFT configuration updates only the decoder/HQ branch and does not include the current all-block Q/V LoRA. The figure’s TokenUnify-1B column is not the 500M baseline in the quantitative table. Colors are not guaranteed to identify the same GT instance across these methods. <a href="assets/qualitative-comparison.png">Open the original figure ↗</a></p></div></details>
-        <noscript><p class="notice">The interactive controls require JavaScript. The real prediction examples remain available as images below and in the supplementary PDF.</p></noscript>
+        <noscript><p class="notice">The interactive controls require JavaScript. The static prediction examples and full-resolution PNG links remain available on this page.</p></noscript>
       </div>
     </section>
 <section id="method" class="method-section section-space">
