@@ -19,7 +19,7 @@ not statements of current manuscript availability.
 - Anonymous full downloads reproduced the recorded byte sizes and SHA256 values
   for both files: 1,279,754,552 bytes and 76,295,596 bytes. Large-file upload and
   this verification ran directly on the publishing server's network.
-- The notebook pins code revision `84a3f3d5240f3ecf6221ebebfa103616f052ff72`.
+- The notebook pins code revision `6645bc3725b202c454076899ba9d7bcbdc67b484`.
   Interrupted downloads retain partial data, retry at most three times, verify
   HTTP range responses, and promote files only after the expected SHA256 matches.
 - Thirty-nine focused tests passed for inputs, export, retry/resume behavior,
